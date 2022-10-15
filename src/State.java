@@ -12,12 +12,12 @@ public class State{
     private int highScore;
 
     public State() {
-        ArrayList<Point> body = new ArrayList<>();
-        body.add(new Point(40,120));
-        body.add(new Point(20,120));
-        body.add(new Point(0,120));
+        ArrayList<Point> snake = new ArrayList<>();
+        snake.add(new Point(40,120));
+        snake.add(new Point(20,120));
+        snake.add(new Point(0,120));
         fruit = new Point(100, 240);
-        this.snake = body;
+        this.snake = snake;
         direction = VK_RIGHT;
         collided = false;
         score = 0;
