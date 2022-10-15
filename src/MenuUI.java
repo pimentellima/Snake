@@ -17,7 +17,7 @@ public class MenuUI extends JLabel {
         graphics.fillRect(0,0,getWidth(),getHeight());
         graphics.setColor(Styles.TEXT_COLOR);
         graphics.setFont(Styles.TITLE_FONT);
-        graphics.drawString("SNAKE GAME", getWidth()/2 - 50,(getHeight()/2) - 100);
+        graphics.drawString("SNAKE GAME", getWidth()/2 - 75,(getHeight()/2) - 100);
         graphics.setFont(Styles.DEFAULT_FONT);
         graphics.drawString("PRESSIONE ENTER PARA INICIAR", getWidth()/2 - 100,(getHeight()/2));
     }

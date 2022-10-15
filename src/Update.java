@@ -39,7 +39,7 @@ public class Update implements ActionListener {
             state.changeDirection(key);
 
             if (!kb_delay.isRunning()) {
-                state.onMoveSnake();
+                state.moveSnake();
                 kb_delay.restart();
                 world.repaint();
                 scoreBoard.repaint();
@@ -51,7 +51,7 @@ public class Update implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(world.isVisible() && !state.hasCollided()) {
             if (e.getSource() == movement_delay) {
-                state.onMoveSnake();
+                state.moveSnake();
                 world.repaint();
                 scoreBoard.repaint();
             }
