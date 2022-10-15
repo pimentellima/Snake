@@ -31,27 +31,28 @@ public class Update implements ActionListener {
             world.setVisible(true);
         }
 
-        if(world.isVisible() && state.hasCollided() && key == VK_ENTER) {
+        if(world.isVisible() && state.isGameOver() && key == VK_ENTER) {
             state.reset();
         }
 
-        if (world.isVisible() && !state.hasCollided()) {
-            state.changeDirection(key);
+        if (world.isVisible() && !state.isGameOver()) {
+            state.getSnake().changeDirection(key);
 
             if (!kb_delay.isRunning()) {
-                state.moveSnake();
+                state.onMoveSnake();
                 kb_delay.restart();
-                world.repaint();
-                scoreBoard.repaint();
             }
+
+            world.repaint();
+            scoreBoard.repaint();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(world.isVisible() && !state.hasCollided()) {
+        if(world.isVisible() && !state.isGameOver()) {
             if (e.getSource() == movement_delay) {
-                state.moveSnake();
+                state.onMoveSnake();
                 world.repaint();
                 scoreBoard.repaint();
             }

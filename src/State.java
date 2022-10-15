@@ -1,99 +1,88 @@
-import java.util.ArrayList;
-
 import static java.awt.event.KeyEvent.*;
 
 public class State{
 
-    private ArrayList<Point> snake;
+    private Snake snake;
     private Point fruit;
-    private int direction;
-    private Boolean collided;
+    private Point poison;
+    private Boolean gameOver;
     private int score;
     private int highScore;
 
     public State() {
-        ArrayList<Point> snake = new ArrayList<>();
-        snake.add(new Point(40,120));
-        snake.add(new Point(20,120));
-        snake.add(new Point(0,120));
+        snake = new Snake();
         fruit = new Point(100, 240);
-        this.snake = snake;
-        direction = VK_RIGHT;
-        collided = false;
+        poison = null;
+        gameOver = false;
         score = 0;
         highScore = 0;
     }
 
-    public void changeDirection(int direction) {
-        if (direction == VK_RIGHT && (this.direction == VK_UP || this.direction == VK_DOWN)) {
-            this.direction = direction;
+    public void onMoveSnake() {
+        snake.move();
+
+        if(snake.hasEaten(fruit)) {
+            score++;
+            snake.grow();
+            generateFruit();
+            handlePoison();
         }
-        else if (direction == VK_LEFT && (this.direction == VK_UP || this.direction == VK_DOWN)) {
-            this.direction = direction;
+
+        if(snake.hasEaten(poison)) {
+            score--;
+            snake.shrink();
+            removePoison();
         }
-        else if (direction == VK_UP && (this.direction == VK_RIGHT || this.direction == VK_LEFT)) {
-            this.direction = direction;
-        }
-        else if (direction == VK_DOWN && (this.direction == VK_RIGHT || this.direction == VK_LEFT)) {
-            this.direction = direction;
+
+        if(snake.hasCollided()) {
+            gameOver = true;
         }
     }
 
-    public void moveSnake() {
-        Point head = snake.get(0);
-        int previous_px = head.getPx();
-        int previous_py = head.getPy();
-
-        if(head.getPx() == 340 || head.getPx() < 0 || head.getPy() == 400 || head.getPy() < 0) {
-            collided = true;
-        }
-
-        for(Point point: snake) {
-            if(point.equals(head)) {
-                head.move(direction);
-            }
-            else {
-                int current_px = point.getPx();
-                int current_py = point.getPy();
-                point.setPosition(previous_px, previous_py);
-                previous_px = current_px;
-                previous_py = current_py;
-
-                if (point.getPx() == head.getPx() && point.getPy() == head.getPy()) {
-                    collided = true;
+    public Point generateValidPoint() {
+        boolean valid;
+        int px, py;
+        do {
+            valid = true;
+            px = (int) (Math.random() * 360 / 22) * 20;
+            py = (int) (Math.random() * 400 / 22) * 20;
+            for (Point point : snake.getBody()) {
+                if (px == point.getPx() && py == point.getPy()) {
+                    valid = false;
+                    break;
                 }
             }
-        }
+        } while (!valid);
+        return new Point(px, py);
+    }
 
-        if(head.getPx() == fruit.getPx() && head.getPy() == fruit.getPy()) {
-            score++;
-            boolean empty;
-            int random_px, random_py;
-            do {
-                empty = true;
-                random_px = (int) (Math.random() * 360/22) * 20;
-                random_py = (int) (Math.random() * 400/22) * 20;
-                for (Point point : snake) {
-                    if (random_px == point.getPx() && random_py == point.getPy()) {
-                        empty = false;
-                        break;
-                    }
-                }
-            } while(!empty);
-            fruit.setPosition(random_px, random_py);
-            snake.add(new Point(previous_px, previous_py));
+    public void generateFruit() {
+        fruit = generateValidPoint();
+    }
+
+    public void generatePoison() {
+        poison = generateValidPoint();
+    }
+
+    public void removePoison() {
+        poison = null;
+    }
+
+    public void handlePoison() {
+        double chance = Math.random();
+        if(poison == null && chance > 0.7) {
+            generatePoison();
+        }
+        else{
+            removePoison();
         }
     }
 
     public void reset() {
-        ArrayList<Point> body = new ArrayList<>();
-        body.add(new Point(40,120));
-        body.add(new Point(20,120));
-        body.add(new Point(0,120));
+        snake = new Snake();
         fruit = new Point(100, 240);
-        this.snake = body;
-        direction = VK_RIGHT;
-        collided = false;
+        poison = null;
+        gameOver = false;
 
         if(score > highScore) {
             highScore = score;
@@ -101,12 +90,12 @@ public class State{
         score = 0;
     }
 
-    public ArrayList<Point> getSnake() { return snake; }
-    public Boolean hasCollided() { return collided; }
+    public Boolean isGameOver() { return gameOver; }
+    public Snake getSnake() { return snake; }
     public Point getFruit() { return fruit; }
+    public Point getPoison() { return poison; }
     public int getScore() { return score; }
     public int getHighScore() { return highScore; }
-
 }
 
 class Point {

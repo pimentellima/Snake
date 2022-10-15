@@ -18,10 +18,12 @@ public class WorldUI extends JLabel {
         graphics.setFont(Styles.DEFAULT_FONT);
         Color snakeColor = Styles.SNAKE_COLOR;
         Color fruitColor = Styles.FRUIT_COLOR;
+        Color poisonColor = Styles.POISON_COLOR;
 
-        if(state.hasCollided()) {
+        if(state.isGameOver()) {
             snakeColor = Styles.SNAKE_COLOR_TP;
             fruitColor = Styles.FRUIT_COLOR_TP;
+            poisonColor = Styles.POISON_COLOR_TP;
             graphics.setColor(Styles.TEXT_COLOR);
             graphics.drawString("FIM DE JOGO", (getWidth()/2) - 45,(getHeight()/2) - 100);
             graphics.drawString("PRESSIONE ENTER PARA RECOMECAR", (getWidth()/2) - 110,getHeight()/2);
@@ -30,8 +32,13 @@ public class WorldUI extends JLabel {
         graphics.setColor(fruitColor);
         graphics.fillRoundRect(state.getFruit().getPx(), state.getFruit().getPy(), 20, 20, 10, 10);
 
+        if(state.getPoison() != null) {
+            graphics.setColor(poisonColor);
+            graphics.fillRoundRect(state.getPoison().getPx(), state.getPoison().getPy(), 20, 20, 10, 10);
+        }
+
         graphics.setColor(snakeColor);
-        for(Point point : state.getSnake()) {
+        for(Point point : state.getSnake().getBody()) {
             graphics.fillRoundRect(point.getPx(), point.getPy(), 20, 20, 10, 10);
         }
     }
