@@ -5,15 +5,6 @@ public class WorldView extends JPanel implements StateListener {
 
     private final State state;
 
-    static final Color SNAKE_COLOR = new Color(103, 133, 88, 255);
-    static final Color SNAKE_COLOR_TP = new Color(103, 133, 88, 100);
-    static final Color FRUIT_COLOR = new Color(253, 152, 67, 255);
-    static final Color FRUIT_COLOR_TP = new Color(253, 152, 67, 100);
-    static final Color POISON_COLOR = new Color(151, 117, 170);
-    static final Color POISON_COLOR_TP = new Color(151, 117, 170, 100);
-    static final Color TEXT_COLOR = new Color(151, 117, 170);
-    static final Color GAME_COLOR = new Color(43, 43, 44);
-    static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 12);
 
     public WorldView(State state) {
         this.state = state;
@@ -23,18 +14,18 @@ public class WorldView extends JPanel implements StateListener {
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(GAME_COLOR);
+        graphics.setColor(Styles.GAME_COLOR);
         graphics.fillRect(0,0,getWidth(),getHeight());
-        graphics.setFont(DEFAULT_FONT);
-        Color snakeColor = SNAKE_COLOR;
-        Color fruitColor = FRUIT_COLOR;
-        Color poisonColor = POISON_COLOR;
+        graphics.setFont(Styles.DEFAULT_FONT);
+        Color snakeColor = Styles.SNAKE_COLOR;
+        Color fruitColor = Styles.FRUIT_COLOR;
+        Color poisonColor = Styles.POISON_COLOR;
 
         if(state.isGameOver()) {
-            snakeColor = SNAKE_COLOR_TP;
-            fruitColor = FRUIT_COLOR_TP;
-            poisonColor = POISON_COLOR_TP;
-            graphics.setColor(TEXT_COLOR);
+            snakeColor = Styles.SNAKE_COLOR_TP;
+            fruitColor = Styles.FRUIT_COLOR_TP;
+            poisonColor = Styles.POISON_COLOR_TP;
+            graphics.setColor(Styles.TEXT_COLOR);
             graphics.drawString("FIM DE JOGO", (getWidth()/2) - 45,(getHeight()/2) - 100);
             graphics.drawString("PRESSIONE ENTER PARA RECOMECAR", (getWidth()/2) - 110,getHeight()/2);
         }
