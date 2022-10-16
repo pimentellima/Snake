@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-import static java.awt.event.KeyEvent.*;
+
+import static java.awt.event.KeyEvent.VK_RIGHT;
 
 public class Snake {
 
@@ -35,17 +36,11 @@ public class Snake {
         }
     }
 
+    public int getDirection() { return direction; }
+    public void setDirection(int direction) { this.direction = direction; }
+
     public void grow() { body.add(new Point(trail.getPx(), trail.getPy())); }
     public void shrink() { body.remove(body.get(body.size() - 1)); }
-
-    public void changeDirection(int direction) {
-        if (this.direction == VK_RIGHT && (direction == VK_UP || direction == VK_DOWN) ||
-                this.direction == VK_LEFT && (direction == VK_UP || direction == VK_DOWN) ||
-                this.direction == VK_UP && (direction == VK_RIGHT || direction == VK_LEFT) ||
-                this.direction == VK_DOWN && (direction == VK_RIGHT || direction == VK_LEFT)) {
-            this.direction = direction;
-        }
-    }
 
     public Boolean hasEaten(Point point) {
         if(point == null) {
@@ -64,10 +59,11 @@ public class Snake {
         for(int i = 1; i < body.size(); i++) {
             Point point = body.get(i);
             if (point.getPx() == head.getPx() && point.getPy() == head.getPy()) {
-                    return true;
-                }
-            } return false;
-        }
+                return true;
+            }
+        } return false;
+    }
 
     public ArrayList<Point> getBody() { return body; }
 }
+

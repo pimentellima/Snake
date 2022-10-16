@@ -1,6 +1,12 @@
+import java.util.ArrayList;
+
 import static java.awt.event.KeyEvent.*;
 
-public class State{
+interface StateListener {
+    void changeOccurred();
+}
+
+public class State {
 
     private Snake snake;
     private Point fruit;
@@ -8,34 +14,70 @@ public class State{
     private Boolean gameOver;
     private int score;
     private int highScore;
+    private final ArrayList<StateListener> stateListeners;
 
     public State() {
         snake = new Snake();
-        fruit = new Point(100, 240);
+        fruit = generateValidPoint();
         poison = null;
         gameOver = false;
         score = 0;
         highScore = 0;
+        stateListeners = new ArrayList<>();
     }
 
-    public void onMoveSnake() {
+    public void update() {
         snake.move();
 
         if(snake.hasEaten(fruit)) {
-            score++;
+            increaseScore();
             snake.grow();
             generateFruit();
             handlePoison();
         }
 
         if(snake.hasEaten(poison)) {
-            score--;
+            decreaseScore();
             snake.shrink();
             removePoison();
         }
 
         if(snake.hasCollided()) {
             gameOver = true;
+        }
+        fireWorldEvent();
+    }
+
+    public void increaseScore() {
+        score++;
+    }
+
+    public void decreaseScore() {
+        score--;
+    }
+
+    public void goLeft() {
+        int direction = snake.getDirection();
+        if (direction == VK_UP || direction == VK_DOWN) {
+            snake.setDirection(VK_LEFT);
+        }
+    }
+    public void goRight() {
+        int direction = snake.getDirection();
+        if (direction == VK_UP || snake.getDirection() == VK_DOWN) {
+            snake.setDirection(VK_RIGHT);
+        }
+    }
+    public void goUp() {
+        int direction = snake.getDirection();
+        if(direction == VK_RIGHT || direction == VK_LEFT) {
+            snake.setDirection(VK_UP);
+        }
+    }
+    public void goDown() {
+        int direction = snake.getDirection();
+        if(direction == VK_RIGHT || direction == VK_LEFT) {
+            snake.setDirection(VK_DOWN);
         }
     }
 
@@ -80,7 +122,7 @@ public class State{
 
     public void reset() {
         snake = new Snake();
-        fruit = new Point(100, 240);
+        generateFruit();
         poison = null;
         gameOver = false;
 
@@ -88,6 +130,8 @@ public class State{
             highScore = score;
         }
         score = 0;
+
+        fireWorldEvent();
     }
 
     public Boolean isGameOver() { return gameOver; }
@@ -96,31 +140,15 @@ public class State{
     public Point getPoison() { return poison; }
     public int getScore() { return score; }
     public int getHighScore() { return highScore; }
+
+    public void addStateListener(StateListener listener) {
+        stateListeners.add(listener);
+    }
+
+    public void fireWorldEvent() {
+        for(StateListener listener: stateListeners) {
+            listener.changeOccurred();
+        }
+    }
+
 }
-
-class Point {
-    private int px;
-    private int py;
-
-    public Point(int px, int py) {
-        this.px = px;
-        this.py = py;
-    }
-
-    public void setPosition(int px, int py) {
-        this.px = px;
-        this.py = py;
-    }
-
-    public int getPx() { return px; }
-    public int getPy() { return py; }
-
-    public void move(int direction) {
-        if(direction == VK_RIGHT) { px += 20; }
-        else if(direction == VK_LEFT) { px -= 20; }
-        else if(direction == VK_UP) { py -= 20; }
-        else if(direction == VK_DOWN) { py += 20; }
-    }
-}
-
-
