@@ -1,3 +1,8 @@
+package View;
+
+import Model.Point;
+import Model.State;
+import Model.StateListener;
 import javax.swing.*;
 import java.awt.*;
 

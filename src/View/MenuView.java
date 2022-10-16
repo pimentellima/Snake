@@ -1,3 +1,6 @@
+package View;
+
+import Model.State;
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,3 +1,5 @@
+package View;
+
 import java.awt.*;
 
 public class Styles {
@@ -12,4 +14,5 @@ public class Styles {
     static final Color GAME_COLOR = new Color(43, 43, 44);
     static final Color SCOREBOARD_COLOR = new Color(60, 63, 65);
     static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 12);
-    static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 18);}
+    static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 18);
+}

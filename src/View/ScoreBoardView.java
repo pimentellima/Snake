@@ -1,7 +1,11 @@
+package View;
+
+import Model.State;
+import Model.StateListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class ScoreBoardView extends JLabel implements StateListener{
+public class ScoreBoardView extends JLabel implements StateListener {
 
     State state;
 

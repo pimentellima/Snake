@@ -1,3 +1,8 @@
+import Controller.GameController;
+import Model.State;
+import View.MenuView;
+import View.ScoreBoardView;
+import View.WorldView;
 import javax.swing.*;
 import java.awt.*;
 

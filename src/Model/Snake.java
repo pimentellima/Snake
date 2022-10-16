@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+package Model;
 
+import java.util.ArrayList;
 import static java.awt.event.KeyEvent.VK_RIGHT;
 
 public class Snake {

@@ -1,3 +1,5 @@
+package Model;
+
 import static java.awt.event.KeyEvent.*;
 
 public class Point {

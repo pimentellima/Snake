@@ -1,10 +1,7 @@
+package Model;
+
 import java.util.ArrayList;
-
 import static java.awt.event.KeyEvent.*;
-
-interface StateListener {
-    void changeOccurred();
-}
 
 public class State {
 
