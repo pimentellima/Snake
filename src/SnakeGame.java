@@ -1,4 +1,4 @@
-import Controller.GameController;
+import Control.GameController;
 import Model.State;
 import View.MenuView;
 import View.ScoreBoardView;

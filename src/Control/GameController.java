@@ -1,4 +1,4 @@
-package Controller;
+package Control;
 
 import Model.State;
 import Model.StateListener;
@@ -13,15 +13,15 @@ public class GameController implements StateListener {
     private final State state;
     private final MenuView menu;
     private final WorldView world;
-    private final Timer update_rate;
-    private final Timer input_delay;
+    private final Timer updateRate;
+    private final Timer inputDelay;
 
     public GameController(State state, MenuView menu, WorldView world) {
         this.state = state;
         this.menu = menu;
         this.world = world;
-        update_rate = new Timer (150, new updateAction());
-        input_delay = new Timer(150, new inputDelayAction());
+        updateRate = new Timer (150, new updateAction());
+        inputDelay = new Timer(150, new inputDelayAction());
         state.addStateListener(this);
 
         InputMap menuInputMap = menu.getInputMap();
@@ -41,7 +41,7 @@ public class GameController implements StateListener {
     private class inputDelayAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            input_delay.stop();
+            inputDelay.stop();
         }
     }
 
@@ -49,9 +49,9 @@ public class GameController implements StateListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             state.goRight();
-            if(!input_delay.isRunning()) {
+            if(!inputDelay.isRunning()) {
                 state.update();
-                input_delay.restart();
+                inputDelay.restart();
             }
         }
     }
@@ -59,9 +59,9 @@ public class GameController implements StateListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             state.goLeft();
-            if(!input_delay.isRunning()) {
+            if(!inputDelay.isRunning()) {
                 state.update();
-                input_delay.restart();
+                inputDelay.restart();
             }
         }
     }
@@ -69,9 +69,9 @@ public class GameController implements StateListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             state.goUp();
-            if (!input_delay.isRunning()) {
+            if (!inputDelay.isRunning()) {
                 state.update();
-                input_delay.restart();
+                inputDelay.restart();
             }
         }
     }
@@ -80,9 +80,9 @@ public class GameController implements StateListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             state.goDown();
-            if (!input_delay.isRunning()) {
+            if (!inputDelay.isRunning()) {
                 state.update();
-                input_delay.restart();
+                inputDelay.restart();
             }
         }
     }
@@ -102,7 +102,7 @@ public class GameController implements StateListener {
 
             world.setVisible(true);
             menu.setVisible(false);
-            update_rate.start();
+            updateRate.start();
         }
     }
 
@@ -110,16 +110,16 @@ public class GameController implements StateListener {
     public void changeOccurred() {
         if(state.isGameOver()) {
             setRestartBindings();
-            update_rate.stop();
+            updateRate.stop();
         }
 
-        if(!state.isGameOver()) {
+        if(!state.isGameOver() && !updateRate.isRunning()) {
             setMovementBindings();
-            update_rate.start();
+            updateRate.start();
         }
     }
 
-    public void setMovementBindings() {
+    private void setMovementBindings() {
         InputMap worldInputMap = world.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
         ActionMap worldActionMap = world.getActionMap();
         worldActionMap.remove("Enter");
@@ -135,7 +135,7 @@ public class GameController implements StateListener {
         worldActionMap.put("MoveDown", new MoveDownAction());
     }
 
-    public void setRestartBindings() {
+    private void setRestartBindings() {
         InputMap worldInputMap = world.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
         ActionMap worldActionMap = world.getActionMap();
         worldActionMap.clear();
