@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class ScoreBoard extends JPanel{
 
-    int score;
-    int highScore;
+    private int score;
+    private int highScore;
     private final ScoreLabel scoreLabel;
     private final ScoreLabel highScoreLabel;
 

@@ -1,13 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class World extends JPanel {
 
-    public Snake snake;
-    public Point fruit;
+    private Snake snake;
+    private Point fruit;
     private Boolean gameOver;
     private final ScoreBoard scoreBoard;
 
@@ -39,6 +38,7 @@ public class World extends JPanel {
                     timePass.stop();
                     gameOverLabel.setVisible(true);
                 }
+
                 repaint();
             }
         });
@@ -51,7 +51,6 @@ public class World extends JPanel {
         });
 
         setWorldBindings();
-
         setLayout(new GridLayout());
         gameOverLabel.setFont(GameGUI.DEFAULT_FONT);
         gameOverLabel.setForeground(GameGUI.TEXT_COLOR);
