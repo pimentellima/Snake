@@ -1,5 +1,5 @@
 package Model;
 
 public interface StateListener {
-    void changeOccurred();
+    void onStateChange();
 }

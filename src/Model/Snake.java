@@ -1,7 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
-import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.*;
 
 public class Snake {
 
@@ -11,15 +11,15 @@ public class Snake {
 
     public Snake() {
         ArrayList<Point> body = new ArrayList<>();
-        body.add(new Point(40,120));
-        body.add(new Point(20,120));
+        body.add(new Point(60,120));
+        body.add(new Point(30,120));
         body.add(new Point(0,120));
         this.body = body;
         trail = body.get(body.size() - 1);
         direction = VK_RIGHT;
     }
 
-    public void move() {
+    public void moveForward() {
         trail = body.get(body.size() - 1);
 
         Point head = body.get(0);
@@ -37,11 +37,28 @@ public class Snake {
         }
     }
 
-    public int getDirection() { return direction; }
-    public void setDirection(int direction) { this.direction = direction; }
+    public void moveLeft() {
+        if (direction == VK_UP || direction == VK_DOWN) {
+            direction = VK_LEFT;
+        }
+    }
+    public void moveRight() {
+        if (direction == VK_UP || direction == VK_DOWN) {
+            direction = VK_RIGHT;
+        }
+    }
+    public void moveUp() {
+        if(direction == VK_RIGHT || direction == VK_LEFT) {
+            direction = VK_UP;
+        }
+    }
+    public void moveDown() {
+        if(direction == VK_RIGHT || direction == VK_LEFT) {
+            direction = VK_DOWN;
+        }
+    }
 
     public void grow() { body.add(new Point(trail.getPx(), trail.getPy())); }
-    public void shrink() { body.remove(body.get(body.size() - 1)); }
 
     public Boolean hasEaten(Point point) {
         if(point == null) {
@@ -54,7 +71,7 @@ public class Snake {
     public Boolean hasCollided() {
         Point head = body.get(0);
 
-        if(head.getPx() == 340 || head.getPx() < 0 || head.getPy() == 400 || head.getPy() < 0) {
+        if(head.getPx() == 600 || head.getPx() < 0 || head.getPy() == 450 || head.getPy() < 0) {
             return true;
         }
         for(int i = 1; i < body.size(); i++) {
@@ -64,6 +81,8 @@ public class Snake {
             }
         } return false;
     }
+
+    public int getSize() { return body.size(); }
 
     public ArrayList<Point> getBody() { return body; }
 }

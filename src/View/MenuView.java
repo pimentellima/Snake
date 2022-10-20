@@ -1,26 +1,23 @@
 package View;
 
-import Model.State;
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuView extends JPanel {
 
-    State state;
-
-    public MenuView(State state) {
-        this.state = state;
-    }
-
-    public void paintComponent(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(Styles.GAME_COLOR);
-        graphics.fillRect(0,0,getWidth(),getHeight());
-        graphics.setColor(Styles.TEXT_COLOR);
-        graphics.setFont(Styles.TITLE_FONT);
-        graphics.drawString("SNAKE GAME", getWidth()/2 - 75,(getHeight()/2) - 100);
-        graphics.setFont(Styles.DEFAULT_FONT);
-        graphics.drawString("PRESSIONE ENTER PARA INICIAR", getWidth()/2 - 100,(getHeight()/2));
+    public MenuView() {
+        setBackground(Styles.GAME_COLOR);
+        setLayout(new GridLayout(2,1));
+        JLabel mainText = new JLabel("SNAKE");
+        JLabel subText = new JLabel("PRESSIONE ENTER PARA INICIAR");
+        mainText.setFont(Styles.TITLE_FONT);
+        mainText.setForeground(Styles.TEXT_COLOR);
+        subText.setForeground(Styles.TEXT_COLOR);
+        subText.setFont(Styles.DEFAULT_FONT);
+        mainText.setHorizontalAlignment(SwingConstants.CENTER);
+        subText.setHorizontalAlignment(SwingConstants.CENTER);
+        subText.setVerticalAlignment(SwingConstants.CENTER);
+        add(mainText);
+        add(subText);
     }
 }

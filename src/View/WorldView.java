@@ -9,11 +9,20 @@ import java.awt.*;
 public class WorldView extends JPanel implements StateListener {
 
     private final State state;
-
+    private final JLabel gameOverLabel;
+    private static final int POINT_WIDTH = 30;
+    private static final int POINT_HEIGHT = 30;
 
     public WorldView(State state) {
         this.state = state;
-        state.addStateListener(this);
+        setLayout(new GridLayout());
+        this.gameOverLabel = new JLabel("PRESSIONE ENTER PARA RECOMEÇAR");
+        gameOverLabel.setFont(Styles.DEFAULT_FONT);
+        gameOverLabel.setForeground(Styles.TEXT_COLOR);
+        gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        gameOverLabel.setVerticalAlignment(SwingConstants.CENTER);
+        gameOverLabel.setVisible(false);
+        add(gameOverLabel);
     }
 
     public void paintComponent(Graphics g) {
@@ -21,36 +30,26 @@ public class WorldView extends JPanel implements StateListener {
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setColor(Styles.GAME_COLOR);
         graphics.fillRect(0,0,getWidth(),getHeight());
-        graphics.setFont(Styles.DEFAULT_FONT);
         Color snakeColor = Styles.SNAKE_COLOR;
         Color fruitColor = Styles.FRUIT_COLOR;
-        Color poisonColor = Styles.POISON_COLOR;
 
         if(state.isGameOver()) {
             snakeColor = Styles.SNAKE_COLOR_TP;
             fruitColor = Styles.FRUIT_COLOR_TP;
-            poisonColor = Styles.POISON_COLOR_TP;
-            graphics.setColor(Styles.TEXT_COLOR);
-            graphics.drawString("FIM DE JOGO", (getWidth()/2) - 45,(getHeight()/2) - 100);
-            graphics.drawString("PRESSIONE ENTER PARA RECOMECAR", (getWidth()/2) - 110,getHeight()/2);
         }
 
         graphics.setColor(fruitColor);
-        graphics.fillRoundRect(state.getFruit().getPx(), state.getFruit().getPy(), 20, 20, 10, 10);
-
-        if(state.getPoison() != null) {
-            graphics.setColor(poisonColor);
-            graphics.fillRoundRect(state.getPoison().getPx(), state.getPoison().getPy(), 20, 20, 10, 10);
-        }
+        graphics.fillRoundRect(state.fruit.getPx(), state.fruit.getPy(), POINT_WIDTH, POINT_HEIGHT, 15, 15);
 
         graphics.setColor(snakeColor);
-        for(Point point : state.getSnake().getBody()) {
-            graphics.fillRoundRect(point.getPx(), point.getPy(), 20, 20, 10, 10);
+        for(Point point : state.snake.getBody()) {
+            graphics.fillRoundRect(point.getPx(), point.getPy(), POINT_WIDTH, POINT_HEIGHT, 15, 15);
         }
     }
 
     @Override
-    public void changeOccurred() {
+    public void onStateChange() {
+        gameOverLabel.setVisible(state.isGameOver());
         repaint();
     }
 }

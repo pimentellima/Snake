@@ -20,10 +20,10 @@ public class Point {
     public int getPy() { return py; }
 
     public void move(int direction) {
-        if(direction == VK_RIGHT) { px += 20; }
-        else if(direction == VK_LEFT) { px -= 20; }
-        else if(direction == VK_UP) { py -= 20; }
-        else if(direction == VK_DOWN) { py += 20; }
+        if(direction == VK_RIGHT) { px += 30; }
+        else if(direction == VK_LEFT) { px -= 30; }
+        else if(direction == VK_UP) { py -= 30; }
+        else if(direction == VK_DOWN) { py += 30; }
     }
 }
 

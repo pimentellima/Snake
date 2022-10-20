@@ -5,29 +5,40 @@ import Model.StateListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class ScoreBoardView extends JLabel implements StateListener {
+public class ScoreBoardView extends JPanel implements StateListener {
 
-    State state;
+    private final State state;
+    private final ScoreLabel scoreLabel;
+    private final ScoreLabel highScoreLabel;
 
     public ScoreBoardView(State state) {
-        super("ScoreBoard");
         this.state = state;
-        state.addStateListener(this);
+        setBackground(Styles.SCOREBOARD_COLOR);
+        setLayout(new GridLayout());
+        this.scoreLabel = new ScoreLabel("Pontuação = ", state.getScore());
+        this.highScoreLabel = new ScoreLabel("Maior pontuação = ", state.getHighScore());
+        add(scoreLabel);
+        add(highScoreLabel);
     }
 
-    public void paintComponent(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(Styles.SCOREBOARD_COLOR);
-        graphics.fillRect(0,0,getWidth(),getHeight());
-        graphics.setColor(Styles.TEXT_COLOR);
-        graphics.setFont(Styles.DEFAULT_FONT);
-        graphics.drawString("Pontuacao = " + state.getScore(), 0, getHeight() - 20);
-        graphics.drawString("Maior Pontuacao = " + state.getHighScore(), 150, getHeight() - 20);
+    private static class ScoreLabel extends JLabel {
+
+        String text;
+
+        public ScoreLabel(String text, int score) {
+            super(text + score);
+            this.text = text;
+            setFont(Styles.DEFAULT_FONT);
+            setForeground(Styles.TEXT_COLOR);
+        }
+        public void updateScore(int score) {
+            setText(text + score);
+        }
     }
 
     @Override
-    public void changeOccurred() {
-        repaint();
+    public void onStateChange() {
+        scoreLabel.updateScore(state.getScore());
+        highScoreLabel.updateScore(state.getHighScore());
     }
 }

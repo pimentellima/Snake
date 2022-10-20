@@ -14,31 +14,27 @@ public class SnakeGame {
             super("Snake game");
 
             State state = new State();
-
-            JPanel mainPanel = new JPanel();
-            mainPanel.setLayout(new CardLayout());
-            mainPanel.setSize(360, 400);
-            add(mainPanel);
-
+            MenuView menu = new MenuView();
             WorldView world = new WorldView(state);
-            MenuView menu = new MenuView(state);
-            mainPanel.add("menu", menu);
-            mainPanel.add("world", world);
-
             ScoreBoardView scoreBoard = new ScoreBoardView(state);
-            scoreBoard.setSize(360, 100);
-            add(scoreBoard);
+            new GameController(state, menu, world, scoreBoard);
 
-            new GameController(state, menu, world);
-
-            world.setVisible(false);
-            menu.setVisible(true);
-            scoreBoard.setVisible(true);
-
-            setSize(360, 500);
+            JPanel mainContainer = new JPanel();
+            mainContainer.setLayout(new BoxLayout(mainContainer, BoxLayout.Y_AXIS));
+            JPanel centerContainer = new JPanel();
+            centerContainer.setLayout(new CardLayout());
+            centerContainer.add("menu", menu);
+            centerContainer.add("world", world);
+            centerContainer.setMaximumSize(new Dimension(600, 450));
+            scoreBoard.setMaximumSize(new Dimension(600, 100));
+            mainContainer.add(centerContainer);
+            mainContainer.add(scoreBoard);
+            add(mainContainer);
+            mainContainer.setVisible(true);
+            setSize(614, 590);
             setResizable(false);
             setLocationRelativeTo(null);
-            setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
     }
 
