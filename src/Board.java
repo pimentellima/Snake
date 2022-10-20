@@ -51,4 +51,3 @@ public class Board extends JPanel {
         mainContainer.setVisible(true);
     }
 }
-
