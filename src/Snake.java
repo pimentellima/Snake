@@ -1,5 +1,3 @@
-package Model;
-
 import java.util.ArrayList;
 import static java.awt.event.KeyEvent.*;
 
@@ -81,8 +79,6 @@ public class Snake {
             }
         } return false;
     }
-
-    public int getSize() { return body.size(); }
 
     public ArrayList<Point> getBody() { return body; }
 }
