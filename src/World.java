@@ -16,14 +16,33 @@ public class World extends JPanel {
     private final Timer timePass;
     private final Timer keyboardDelay;
 
-
     public World(ScoreBoard scoreBoard) {
         snake = new Snake();
         fruit = generateValidPoint();
         gameOver = false;
         this.scoreBoard = scoreBoard;
         this.gameOverLabel = new JLabel("PRESSIONE ENTER PARA RECOMEÇAR");
-        timePass = new Timer(150, new onTimePass());
+
+        timePass = new Timer(150, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snake.moveForward();
+
+                if(snake.hasEaten(fruit)) {
+                    scoreBoard.increaseScore();
+                    snake.grow();
+                    fruit = generateValidPoint();
+                }
+
+                if(snake.hasCollided()) {
+                    gameOver = true;
+                    timePass.stop();
+                    gameOverLabel.setVisible(true);
+                }
+                repaint();
+            }
+        });
+
         keyboardDelay = new Timer(100, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -44,26 +63,6 @@ public class World extends JPanel {
 
     public void start() {
         timePass.start();
-    }
-
-    private class onTimePass implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            snake.moveForward();
-
-            if(snake.hasEaten(fruit)) {
-                scoreBoard.increaseScore();
-                snake.grow();
-                fruit = generateValidPoint();
-            }
-
-            if(snake.hasCollided()) {
-                gameOver = true;
-                timePass.stop();
-                gameOverLabel.setVisible(true);
-            }
-            repaint();
-        }
     }
 
     public Point generateValidPoint() {
