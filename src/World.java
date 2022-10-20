@@ -16,9 +16,6 @@ public class World extends JPanel {
     private final Timer timePass;
     private final Timer keyboardDelay;
 
-    private static final int POINT_WIDTH = 30;
-    private static final int POINT_HEIGHT = 30;
-
 
     public World(ScoreBoard scoreBoard) {
         snake = new Snake();
@@ -161,11 +158,11 @@ public class World extends JPanel {
         }
 
         graphics.setColor(fruitColor);
-        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), POINT_WIDTH, POINT_HEIGHT, 15, 15);
+        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
 
         graphics.setColor(snakeColor);
         for(Point point : snake.getBody()) {
-            graphics.fillRoundRect(point.getPx(), point.getPy(), POINT_WIDTH, POINT_HEIGHT, 15, 15);
+            graphics.fillRoundRect(point.getPx(), point.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
         }
     }
 }

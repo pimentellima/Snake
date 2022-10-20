@@ -26,6 +26,8 @@ class GameGUI extends JFrame {
     public static final Color GAME_COLOR = new Color(60, 63, 65);
     public static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 24);
     public static final Font TITLE_FONT = new Font(Font.MONOSPACED, Font.BOLD, 42);
+    public static final int POINT_WIDTH = 30;
+    public static final int POINT_HEIGHT = 30;
 
     public GameGUI() {
         Menu menu = new Menu();
