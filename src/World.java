@@ -3,13 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class World extends JPanel {
+public class World extends JPanel{
 
     private Snake snake;
     private Point fruit;
     private Boolean gameOver;
     private final ScoreBoard scoreBoard;
-
     private final JLabel gameOverLabel;
 
     private final Timer timePass;
@@ -22,26 +21,7 @@ public class World extends JPanel {
         this.scoreBoard = scoreBoard;
         this.gameOverLabel = new JLabel("PRESSIONE ENTER PARA RECOMEÇAR");
 
-        timePass = new Timer(150, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                snake.moveForward();
-
-                if(snake.hasEaten(fruit)) {
-                    scoreBoard.increaseScore();
-                    snake.grow();
-                    fruit = generateValidPoint();
-                }
-
-                if(snake.hasCollided()) {
-                    gameOver = true;
-                    timePass.stop();
-                    gameOverLabel.setVisible(true);
-                }
-
-                repaint();
-            }
-        });
+        timePass = new Timer(150, new timePassAction());
 
         keyboardDelay = new Timer(100, new AbstractAction() {
             @Override
@@ -51,13 +31,34 @@ public class World extends JPanel {
         });
 
         setWorldBindings();
+
         setLayout(new GridLayout());
-        gameOverLabel.setFont(GameGUI.DEFAULT_FONT);
-        gameOverLabel.setForeground(GameGUI.TEXT_COLOR);
+        gameOverLabel.setFont(Board.DEFAULT_FONT);
+        gameOverLabel.setForeground(Board.TEXT_COLOR);
         gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
         gameOverLabel.setVerticalAlignment(SwingConstants.CENTER);
         add(gameOverLabel);
         gameOverLabel.setVisible(false);
+    }
+
+    private class timePassAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            snake.moveForward();
+            if(snake.hasEaten(fruit)) {
+                scoreBoard.increaseScore();
+                snake.grow();
+                fruit = generateValidPoint();
+            }
+
+            if(snake.hasCollided()) {
+                gameOver = true;
+                timePass.stop();
+                gameOverLabel.setVisible(true);
+            }
+
+            repaint();
+        }
     }
 
     public void start() {
@@ -102,6 +103,7 @@ public class World extends JPanel {
                 }
             }
         });
+
         worldActionMap.put("MoveLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,6 +113,7 @@ public class World extends JPanel {
                 }
             }
         });
+
         worldActionMap.put("MoveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -120,6 +123,7 @@ public class World extends JPanel {
                 }
             }
         });
+
         worldActionMap.put("MoveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,6 +133,7 @@ public class World extends JPanel {
                 }
             }
         });
+
         gameOverActionMap.put("Enter", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,22 +150,22 @@ public class World extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(GameGUI.GAME_COLOR);
+        graphics.setColor(Board.GAME_COLOR);
         graphics.fillRect(0,0,getWidth(),getHeight());
-        Color snakeColor = GameGUI.SNAKE_COLOR;
-        Color fruitColor = GameGUI.FRUIT_COLOR;
+        Color snakeColor = Board.SNAKE_COLOR;
+        Color fruitColor = Board.FRUIT_COLOR;
 
         if(gameOver) {
-            snakeColor = GameGUI.SNAKE_COLOR_TP;
-            fruitColor = GameGUI.FRUIT_COLOR_TP;
+            snakeColor = Board.SNAKE_COLOR_TP;
+            fruitColor = Board.FRUIT_COLOR_TP;
         }
 
         graphics.setColor(fruitColor);
-        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
+        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), Board.POINT_WIDTH, Board.POINT_HEIGHT, 15, 15);
 
         graphics.setColor(snakeColor);
         for(Point point : snake.getBody()) {
-            graphics.fillRoundRect(point.getPx(), point.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
+            graphics.fillRoundRect(point.getPx(), point.getPy(), Board.POINT_WIDTH, Board.POINT_HEIGHT, 15, 15);
         }
     }
 }

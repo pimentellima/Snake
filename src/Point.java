@@ -1,8 +1,8 @@
 import static java.awt.event.KeyEvent.*;
 
 public class Point {
-    protected int px;
-    protected int py;
+    private int px;
+    private int py;
 
     public Point(int px, int py) {
         this.px = px;
