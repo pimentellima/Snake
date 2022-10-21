@@ -25,12 +25,15 @@ public class Scoreboard extends JPanel{
         scoreLabel.updateScore(score);
     }
 
-    public void reset() {
+    public void setDefault() {
+        score = 0;
+        scoreLabel.updateScore(score);
+    }
+
+    public void updateHighScore() {
         if(score > highScore) {
             highScore = score;
         }
-        score = 0;
-        scoreLabel.updateScore(score);
         highScoreLabel.updateScore(highScore);
     }
 
