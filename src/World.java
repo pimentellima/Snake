@@ -1,40 +1,38 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class World extends JPanel{
+public class World extends JPanel {
 
     Snake snake;
     Point fruit;
     private Boolean gameOver;
-    private ScoreBoard scoreBoard;
-    private JLabel gameOverLabel;
-    private Timer timePass;
+    private final ScoreBoard scoreBoard;
+    private final Timer timePass;
+    private final WorldStateListener worldStateListener;
 
-    public void addSnake(Snake snake) { this.snake = snake; }
-    public void addFruit(Point fruit) { this.fruit = fruit; }
-    public void addScoreboard(ScoreBoard scoreBoard) {this.scoreBoard = scoreBoard;}
-    public void addGameOverLabel(JLabel gameOverLabel) { this.gameOverLabel = gameOverLabel; }
-    public void addTimer(Timer timePass) {this.timePass = timePass;}
+    public World(Snake snake, ScoreBoard scoreBoard, Timer timePass, WorldStateListener worldStateListener) {
+        this.snake = snake;
+        this.scoreBoard = scoreBoard;
+        this.timePass = timePass;
+        this.worldStateListener = worldStateListener;
+        gameOver = false;
+        snake.setDefault();
+        fruit = generateFruit();
+        timePass.start();
+        setLayout(new GridLayout());
+    }
 
-    public void build(int difficulty) {
-        snake.make();
+    public void rebuild() {
+        snake.setDefault();
         fruit = generateFruit();
         gameOver = false;
         scoreBoard.reset();
         timePass.start();
-        gameOverLabel.setVisible(false);
-        gameOverLabel.setText("PRESSIONE ENTER PARA RECOMEÇAR");
-        setLayout(new GridLayout());
-        gameOverLabel.setFont(Container.DEFAULT_FONT);
-        gameOverLabel.setForeground(Container.TEXT_COLOR);
-        gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        gameOverLabel.setVerticalAlignment(SwingConstants.CENTER);
-        add(gameOverLabel);
-        gameOverLabel.setVisible(false);
     }
 
     public void update() {
         snake.moveForward();
+
         if(snake.hasEaten(fruit)) {
             scoreBoard.increaseScore();
             snake.grow();
@@ -43,13 +41,19 @@ public class World extends JPanel{
 
         if(snake.hasCollided()) {
             gameOver = true;
-            gameOverLabel.setVisible(true);
             timePass.stop();
+            stateChanged();
+        }
+
+        if(snake.getBody().size() - 1 == 300) {
+            timePass.stop();
+            stateChanged();
+
         }
         repaint();
     }
 
-    public Point generateFruit() {
+    private Point generateFruit() {
         boolean valid;
         int px, py;
         do {
@@ -69,22 +73,26 @@ public class World extends JPanel{
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(Container.GAME_COLOR);
+        graphics.setColor(Manager.GAME_COLOR);
         graphics.fillRect(0,0,getWidth(),getHeight());
-        Color snakeColor = Container.SNAKE_COLOR;
-        Color fruitColor = Container.FRUIT_COLOR;
+        Color snakeColor = Manager.SNAKE_COLOR;
+        Color fruitColor = Manager.FRUIT_COLOR;
 
         if(gameOver) {
-            snakeColor = Container.SNAKE_COLOR_TP;
-            fruitColor = Container.FRUIT_COLOR_TP;
+            snakeColor = Manager.SNAKE_COLOR_TP;
+            fruitColor = Manager.FRUIT_COLOR_TP;
         }
 
         graphics.setColor(fruitColor);
-        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), Container.POINT_WIDTH, Container.POINT_HEIGHT, 15, 15);
+        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), Manager.POINT_WIDTH, Manager.POINT_HEIGHT, 15, 15);
 
         graphics.setColor(snakeColor);
         for(Point point : snake.getBody()) {
-            graphics.fillRoundRect(point.getPx(), point.getPy(), Container.POINT_WIDTH, Container.POINT_HEIGHT, 15, 15);
+            graphics.fillRoundRect(point.getPx(), point.getPy(), Manager.POINT_WIDTH, Manager.POINT_HEIGHT, 15, 15);
         }
+    }
+
+    public void stateChanged() {
+        worldStateListener.onStateChange();
     }
 }
