@@ -1,14 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ScoreBoard extends JPanel{
+public class Scoreboard extends JPanel{
 
     private int score;
     private int highScore;
     private final ScoreLabel scoreLabel;
     private final ScoreLabel highScoreLabel;
 
-    public ScoreBoard() {
+    public Scoreboard() {
         score = 0;
         highScore = 0;
         setBackground(Manager.SCOREBOARD_COLOR);

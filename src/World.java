@@ -6,11 +6,11 @@ public class World extends JPanel {
     Snake snake;
     Point fruit;
     private Boolean gameOver;
-    private final ScoreBoard scoreBoard;
+    private final Scoreboard scoreBoard;
     private final Timer timePass;
     private final WorldStateListener worldStateListener;
 
-    public World(Snake snake, ScoreBoard scoreBoard, Timer timePass, WorldStateListener worldStateListener) {
+    public World(Snake snake, Scoreboard scoreBoard, Timer timePass, WorldStateListener worldStateListener) {
         this.snake = snake;
         this.scoreBoard = scoreBoard;
         this.timePass = timePass;
@@ -26,7 +26,6 @@ public class World extends JPanel {
         snake.setDefault();
         fruit = generateFruit();
         gameOver = false;
-        scoreBoard.reset();
         timePass.start();
     }
 
