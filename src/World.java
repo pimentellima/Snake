@@ -22,7 +22,7 @@ public class World extends JPanel {
         setLayout(new GridLayout());
     }
 
-    public void rebuild() {
+    public void setDefault() {
         snake.setDefault();
         fruit = generateFruit();
         gameOver = false;
