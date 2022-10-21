@@ -3,11 +3,12 @@ import static java.awt.event.KeyEvent.*;
 
 public class Snake {
 
-    private final ArrayList<Point> body;
+    private ArrayList<Point> body;
     private Point trail;
     private int direction;
 
-    public Snake() {
+
+    public void make() {
         ArrayList<Point> body = new ArrayList<>();
         body.add(new Point(60,120));
         body.add(new Point(30,120));

@@ -11,7 +11,7 @@ public class ScoreBoard extends JPanel{
     public ScoreBoard() {
         score = 0;
         highScore = 0;
-        setBackground(GameGUI.SCOREBOARD_COLOR);
+        setBackground(Container.SCOREBOARD_COLOR);
         setLayout(new GridLayout());
         this.scoreLabel = new ScoreLabel("Pontuação = ", 0);
         this.highScoreLabel = new ScoreLabel("Maior pontuação = ", 0);
@@ -24,7 +24,7 @@ public class ScoreBoard extends JPanel{
         scoreLabel.updateScore(score);
     }
 
-    public void resetScore() {
+    public void reset() {
         if(score > highScore) {
             highScore = score;
         }
@@ -40,8 +40,8 @@ public class ScoreBoard extends JPanel{
         public ScoreLabel(String text, int score) {
             super(text + score);
             this.text = text;
-            setFont(GameGUI.DEFAULT_FONT);
-            setForeground(GameGUI.TEXT_COLOR);
+            setFont(Container.DEFAULT_FONT);
+            setForeground(Container.TEXT_COLOR);
         }
 
         public void updateScore(int score) {

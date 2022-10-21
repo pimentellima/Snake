@@ -1,71 +1,55 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class World extends JPanel{
 
-    private Snake snake;
-    private Point fruit;
+    Snake snake;
+    Point fruit;
     private Boolean gameOver;
-    private final ScoreBoard scoreBoard;
-    private final JLabel gameOverLabel;
+    private ScoreBoard scoreBoard;
+    private JLabel gameOverLabel;
+    private Timer timePass;
 
-    private final Timer timePass;
-    private final Timer keyboardDelay;
+    public void addSnake(Snake snake) { this.snake = snake; }
+    public void addFruit(Point fruit) { this.fruit = fruit; }
+    public void addScoreboard(ScoreBoard scoreBoard) {this.scoreBoard = scoreBoard;}
+    public void addGameOverLabel(JLabel gameOverLabel) { this.gameOverLabel = gameOverLabel; }
+    public void addTimer(Timer timePass) {this.timePass = timePass;}
 
-    public World(ScoreBoard scoreBoard) {
-        snake = new Snake();
-        fruit = generateValidPoint();
+    public void build(int difficulty) {
+        snake.make();
+        fruit = generateFruit();
         gameOver = false;
-        this.scoreBoard = scoreBoard;
-        this.gameOverLabel = new JLabel("PRESSIONE ENTER PARA RECOMEÇAR");
-
-        timePass = new Timer(150, new timePassAction());
-
-        keyboardDelay = new Timer(100, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                keyboardDelay.stop();
-            }
-        });
-
-        setWorldBindings();
-
+        scoreBoard.reset();
+        timePass.start();
+        gameOverLabel.setVisible(false);
+        gameOverLabel.setText("PRESSIONE ENTER PARA RECOMEÇAR");
         setLayout(new GridLayout());
-        gameOverLabel.setFont(GameGUI.DEFAULT_FONT);
-        gameOverLabel.setForeground(GameGUI.TEXT_COLOR);
+        gameOverLabel.setFont(Container.DEFAULT_FONT);
+        gameOverLabel.setForeground(Container.TEXT_COLOR);
         gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
         gameOverLabel.setVerticalAlignment(SwingConstants.CENTER);
         add(gameOverLabel);
         gameOverLabel.setVisible(false);
     }
 
-    private class timePassAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            snake.moveForward();
-            if(snake.hasEaten(fruit)) {
-                scoreBoard.increaseScore();
-                snake.grow();
-                fruit = generateValidPoint();
-            }
-
-            if(snake.hasCollided()) {
-                gameOver = true;
-                timePass.stop();
-                gameOverLabel.setVisible(true);
-            }
-
-            repaint();
+    public void update() {
+        snake.moveForward();
+        if(snake.hasEaten(fruit)) {
+            scoreBoard.increaseScore();
+            snake.grow();
+            fruit = generateFruit();
         }
+
+        if(snake.hasCollided()) {
+            gameOver = true;
+            gameOverLabel.setVisible(true);
+            timePass.stop();
+        }
+        repaint();
     }
 
-    public void start() {
-        timePass.start();
-    }
-
-    public Point generateValidPoint() {
+    public Point generateFruit() {
         boolean valid;
         int px, py;
         do {
@@ -82,90 +66,25 @@ public class World extends JPanel{
         return new Point(px, py);
     }
 
-    public void setWorldBindings() {
-        InputMap worldInputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        InputMap gameOverInputMap = gameOverLabel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap worldActionMap = this.getActionMap();
-        ActionMap gameOverActionMap = gameOverLabel.getActionMap();
-
-        worldInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "MoveRight");
-        worldInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "MoveLeft");
-        worldInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "MoveUp");
-        worldInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "MoveDown");
-        gameOverInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
-
-        worldActionMap.put("MoveRight", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!keyboardDelay.isRunning()) {
-                    snake.moveRight();
-                    keyboardDelay.restart();
-                }
-            }
-        });
-
-        worldActionMap.put("MoveLeft", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!keyboardDelay.isRunning()) {
-                    snake.moveLeft();
-                    keyboardDelay.restart();
-                }
-            }
-        });
-
-        worldActionMap.put("MoveUp", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!keyboardDelay.isRunning()) {
-                    snake.moveUp();
-                    keyboardDelay.restart();
-                }
-            }
-        });
-
-        worldActionMap.put("MoveDown", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!keyboardDelay.isRunning()) {
-                    snake.moveDown();
-                    keyboardDelay.restart();
-                }
-            }
-        });
-
-        gameOverActionMap.put("Enter", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                snake = new Snake();
-                fruit = generateValidPoint();
-                gameOver = false;
-                scoreBoard.resetScore();
-                timePass.restart();
-                gameOverLabel.setVisible(false);
-            }
-        });
-    }
-
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(GameGUI.GAME_COLOR);
+        graphics.setColor(Container.GAME_COLOR);
         graphics.fillRect(0,0,getWidth(),getHeight());
-        Color snakeColor = GameGUI.SNAKE_COLOR;
-        Color fruitColor = GameGUI.FRUIT_COLOR;
+        Color snakeColor = Container.SNAKE_COLOR;
+        Color fruitColor = Container.FRUIT_COLOR;
 
         if(gameOver) {
-            snakeColor = GameGUI.SNAKE_COLOR_TP;
-            fruitColor = GameGUI.FRUIT_COLOR_TP;
+            snakeColor = Container.SNAKE_COLOR_TP;
+            fruitColor = Container.FRUIT_COLOR_TP;
         }
 
         graphics.setColor(fruitColor);
-        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
+        graphics.fillRoundRect(fruit.getPx(), fruit.getPy(), Container.POINT_WIDTH, Container.POINT_HEIGHT, 15, 15);
 
         graphics.setColor(snakeColor);
         for(Point point : snake.getBody()) {
-            graphics.fillRoundRect(point.getPx(), point.getPy(), GameGUI.POINT_WIDTH, GameGUI.POINT_HEIGHT, 15, 15);
+            graphics.fillRoundRect(point.getPx(), point.getPy(), Container.POINT_WIDTH, Container.POINT_HEIGHT, 15, 15);
         }
     }
 }
