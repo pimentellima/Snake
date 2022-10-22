@@ -7,7 +7,7 @@ public class Snake {
     private Point trail;
     private int direction;
 
-    public void setDefault() {
+    public void setInitialState() {
         ArrayList<Point> body = new ArrayList<>();
         body.add(new Point(60,120));
         body.add(new Point(30,120));

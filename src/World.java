@@ -11,13 +11,13 @@ public class World extends JPanel {
 
     public World(Snake snake, Scoreboard scoreBoard, WorldStateListener worldStateListener) {
         this.snake = snake;
-        gameOver = false;
         this.scoreBoard = scoreBoard;
         this.worldStateListener = worldStateListener;
     }
 
-    public void setDefault() {
-        snake.setDefault();
+    public void setInitialState() {
+        snake.setInitialState();
+        scoreBoard.setInitialState();
         fruit = generateFruit();
         gameOver = false;
     }
@@ -38,18 +38,21 @@ public class World extends JPanel {
 
         if(snake.getBody().size() - 1 == 300) {
             stateChanged();
-
         }
         repaint();
     }
 
     private Point generateFruit() {
-        boolean valid;
+        int worldHeight = Manager.WORLD_HEIGHT;
+        int worldWidth = Manager.WORLD_WIDTH;
+        int pointWidth = Manager.POINT_WIDTH;
+        int pointHeight = Manager.POINT_HEIGHT;
         int px, py;
+        boolean valid;
         do {
             valid = true;
-            px = (int) (Math.random() * 360 / 32) * 30;
-            py = (int) (Math.random() * 400 / 32) * 30;
+            px = (int) (Math.random() * worldWidth / (pointWidth + 2)) * pointWidth;
+            py = (int) (Math.random() * worldHeight / (pointHeight + 2)) * pointHeight;
             for (Point point : snake.getBody()) {
                 if (px == point.getPx() && py == point.getPy()) {
                     valid = false;
@@ -68,7 +71,7 @@ public class World extends JPanel {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setColor(Manager.GAME_COLOR);
-        graphics.fillRect(0,0,getWidth(),getHeight());
+        graphics.fillRect(0,0,Manager.WORLD_WIDTH,Manager.WORLD_HEIGHT);
         Color snakeColor = Manager.SNAKE_COLOR;
         Color fruitColor = Manager.FRUIT_COLOR;
 
