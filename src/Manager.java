@@ -10,11 +10,12 @@ interface WorldStateListener {
 public class Manager extends JPanel implements WorldStateListener {
 
     private final Menu menu;
-    private final Scoreboard scoreBoard;
     private final Snake snake;
+    private final Scoreboard scoreBoard;
     private final GameOverLabel gameOverLabel;
     private final World world;
     private final Timer keyboardDelay;
+    private final Timer timePass;
 
     public static final Color SNAKE_COLOR = new Color(103, 133, 88, 255);
     public static final Color SNAKE_COLOR_TP = new Color(103, 133, 88, 100);
@@ -30,21 +31,25 @@ public class Manager extends JPanel implements WorldStateListener {
 
     public Manager() {
         this.menu = new Menu();
-        this.scoreBoard  = new Scoreboard();
         this.snake = new Snake();
+        this.scoreBoard  = new Scoreboard();
         this.gameOverLabel = new GameOverLabel();
+        this.world = new World(snake, scoreBoard, this);
         keyboardDelay = new Timer(100, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 keyboardDelay.stop();
             }
         });
-        this.world = new World(snake, scoreBoard, new Timer(100, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        timePass = new Timer(100, new AbstractAction() {
+            @Override           public void actionPerformed(ActionEvent e) {
                 world.update();
             }
-        }), this);
+        });
+        setMenuBindings();
+        setWorldBindings();
+        setGameOverBindings();
+
         menu.setVisible(true);
         world.setVisible(false);
         scoreBoard.setVisible(true);
@@ -52,9 +57,6 @@ public class Manager extends JPanel implements WorldStateListener {
         JPanel centerContainer = new JPanel();
         centerContainer.setLayout(new CardLayout());
         centerContainer.setMaximumSize(new Dimension(600, 450));
-        setMenuBindings();
-        setWorldBindings();
-        setGameOverBindings();
         centerContainer.add("menu", menu);
         centerContainer.add("world", world);
         world.add(gameOverLabel);
@@ -70,6 +72,7 @@ public class Manager extends JPanel implements WorldStateListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 world.setDefault();
+                timePass.start();
                 menu.setVisible(false);
                 world.setVisible(true);
             }
@@ -138,6 +141,7 @@ public class Manager extends JPanel implements WorldStateListener {
 
     @Override
     public void onStateChange() {
+        timePass.stop();
         gameOverLabel.setVisible(true);
     }
 }

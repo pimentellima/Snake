@@ -3,30 +3,23 @@ import java.awt.*;
 
 public class World extends JPanel {
 
-    Snake snake;
-    Point fruit;
+    private final Snake snake;
+    private Point fruit;
     private Boolean gameOver;
     private final Scoreboard scoreBoard;
-    private final Timer timePass;
     private final WorldStateListener worldStateListener;
 
-    public World(Snake snake, Scoreboard scoreBoard, Timer timePass, WorldStateListener worldStateListener) {
+    public World(Snake snake, Scoreboard scoreBoard, WorldStateListener worldStateListener) {
         this.snake = snake;
-        this.scoreBoard = scoreBoard;
-        this.timePass = timePass;
-        this.worldStateListener = worldStateListener;
         gameOver = false;
-        snake.setDefault();
-        fruit = generateFruit();
-        timePass.start();
-        setLayout(new GridLayout());
+        this.scoreBoard = scoreBoard;
+        this.worldStateListener = worldStateListener;
     }
 
     public void setDefault() {
         snake.setDefault();
         fruit = generateFruit();
         gameOver = false;
-        timePass.start();
     }
 
     public void update() {
@@ -40,12 +33,10 @@ public class World extends JPanel {
 
         if(snake.hasCollided()) {
             gameOver = true;
-            timePass.stop();
             stateChanged();
         }
 
         if(snake.getBody().size() - 1 == 300) {
-            timePass.stop();
             stateChanged();
 
         }
@@ -69,6 +60,10 @@ public class World extends JPanel {
         return new Point(px, py);
     }
 
+    public void stateChanged() {
+        worldStateListener.onStateChange();
+    }
+
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -89,9 +84,5 @@ public class World extends JPanel {
         for(Point point : snake.getBody()) {
             graphics.fillRoundRect(point.getPx(), point.getPy(), Manager.POINT_WIDTH, Manager.POINT_HEIGHT, 15, 15);
         }
-    }
-
-    public void stateChanged() {
-        worldStateListener.onStateChange();
     }
 }
