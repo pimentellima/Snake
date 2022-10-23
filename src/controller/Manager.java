@@ -32,11 +32,19 @@ public class Manager extends JPanel {
     public static final int WORLD_WIDTH = 600;
 
     public Manager() {
-        this.menu = new Menu();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JPanel mainContainer = new JPanel();
+        mainContainer.setLayout(new CardLayout());
+        mainContainer.setPreferredSize(new Dimension(600, 450));
+        add(mainContainer);
+        menu = new Menu();
         addMenuBindings();
-        this.snake = new Snake();
-        this.scoreBoard  = new Scoreboard();
-        this.world = new World(snake, scoreBoard);
+        mainContainer.add("menu", menu);
+        snake = new Snake();
+        scoreBoard  = new Scoreboard();
+        add(scoreBoard);
+        world = new World(snake, scoreBoard);
+        addWorldBindings();
         world.addStateListener(new Listener() {
             @Override
             public void onGameOver() {
@@ -44,10 +52,10 @@ public class Manager extends JPanel {
                 gameOver.setVisible(true);
             }
         });
-        world.add(gameOver);
-        addWorldBindings();
+        mainContainer.add("game_screen", world);
         gameOver = new GameOver();
         addGameOverBindings();
+        world.add(gameOver);
         keyboardDelay = new Timer(85, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,15 +67,6 @@ public class Manager extends JPanel {
                 world.update();
             }
         });
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JPanel mainContainer = new JPanel();
-        mainContainer.setLayout(new CardLayout());
-        mainContainer.setPreferredSize(new Dimension(600, 450));
-        mainContainer.add("menu", menu);
-        mainContainer.add("game_screen", world);
-        add(mainContainer);
-        add(scoreBoard);
     }
 
     public void addMenuBindings() {
