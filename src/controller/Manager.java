@@ -1,5 +1,7 @@
-package main_window;
+package controller;
 
+import game_screen.GameOver;
+import game_screen.Menu;
 import scoreboard_screen.Scoreboard;
 import game_screen.Snake;
 import game_screen.World;
@@ -11,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 public class Manager extends JPanel {
 
-    private final Menu menu;
+    private final game_screen.Menu menu;
     private final Snake snake;
     private final Scoreboard scoreBoard;
     private final GameOver gameOver;

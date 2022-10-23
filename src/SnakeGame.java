@@ -1,4 +1,4 @@
-import main_window.Manager;
+import controller.Manager;
 
 import javax.swing.*;
 

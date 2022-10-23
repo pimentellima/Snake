@@ -1,4 +1,4 @@
-package main_window;
+package controller;
 
 public interface Listener {
     void onGameOver();

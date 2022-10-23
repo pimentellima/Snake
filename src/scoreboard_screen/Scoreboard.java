@@ -1,6 +1,6 @@
 package scoreboard_screen;
 
-import main_window.Manager;
+import controller.Manager;
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,4 +1,6 @@
-package main_window;
+package game_screen;
+
+import controller.Manager;
 
 import javax.swing.*;
 
