@@ -1,3 +1,6 @@
+package game_screen;
+
+import java.awt.*;
 import java.util.ArrayList;
 import static java.awt.event.KeyEvent.*;
 
@@ -8,11 +11,10 @@ public class Snake {
     private int direction;
 
     public void setInitialState() {
-        ArrayList<Point> body = new ArrayList<>();
+        this.body = new ArrayList<>();
         body.add(new Point(60,120));
         body.add(new Point(30,120));
         body.add(new Point(0,120));
-        this.body = body;
         trail = body.get(body.size() - 1);
         direction = VK_RIGHT;
     }
@@ -56,14 +58,16 @@ public class Snake {
         }
     }
 
-    public void grow() { body.add(new Point(trail.getPx(), trail.getPy())); }
+    public void grow() {
+        body.add(new Point(trail.getPx(), trail.getPy()));
+    }
 
-    public Boolean hasEaten(Point point) {
-        if(point == null) {
+    public Boolean hasEaten(Fruit fruit) {
+        if(fruit == null) {
             return false;
         }
         Point head = body.get(0);
-        return head.getPx() == point.getPx() && head.getPy() == point.getPy();
+        return head.getPx() == fruit.getPx() && head.getPy() == fruit.getPy();
     }
 
     public Boolean hasCollided() {
@@ -81,29 +85,11 @@ public class Snake {
     }
 
     public ArrayList<Point> getBody() { return body; }
-}
 
-class Point {
-    private int px;
-    private int py;
-
-    public Point(int px, int py) {
-        this.px = px;
-        this.py = py;
-    }
-
-    public void setPosition(int px, int py) {
-        this.px = px;
-        this.py = py;
-    }
-
-    public int getPx() { return px; }
-    public int getPy() { return py; }
-
-    public void move(int direction) {
-        if(direction == VK_RIGHT) { px += 30; }
-        else if(direction == VK_LEFT) { px -= 30; }
-        else if(direction == VK_UP) { py -= 30; }
-        else if(direction == VK_DOWN) { py += 30; }
+    public void draw(Graphics g) {
+        for(Point point : body) {
+            point.draw(g);
+        }
     }
 }
+

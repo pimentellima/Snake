@@ -1,3 +1,5 @@
+import main_window.Manager;
+
 import javax.swing.*;
 
 public class SnakeGame {
@@ -10,6 +12,7 @@ public class SnakeGame {
         window.setSize(614, 590);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.pack();
         window.setVisible(true);
     }
 

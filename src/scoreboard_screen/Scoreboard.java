@@ -1,3 +1,6 @@
+package scoreboard_screen;
+
+import main_window.Manager;
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,9 +17,10 @@ public class Scoreboard extends JPanel{
         this.highScoreLabel = new ScoreLabel("Maior pontuação = ", 0);
         setBackground(Manager.SCOREBOARD_COLOR);
         setLayout(new GridLayout());
-        setMaximumSize(new Dimension(600, 100));
+        setPreferredSize(new Dimension(600, 100));
         add(scoreLabel);
         add(highScoreLabel);
+        setVisible(true);
     }
 
     public void setInitialState() {
@@ -44,7 +48,7 @@ public class Scoreboard extends JPanel{
             super(text + score);
             this.text = text;
             setFont(Manager.DEFAULT_FONT);
-            setForeground(Manager.TEXT_COLOR);
+            setForeground(Manager.DEFAULT_COLOR);
         }
 
         public void setScore(int score) {
