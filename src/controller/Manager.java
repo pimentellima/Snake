@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 public class Manager extends JPanel {
 
-    private final game_screen.Menu menu;
+    private final Menu menu;
     private final Snake snake;
     private final Scoreboard scoreBoard;
     private final GameOver gameOver;
@@ -32,29 +32,11 @@ public class Manager extends JPanel {
     public static final int WORLD_WIDTH = 600;
 
     public Manager() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JPanel mainContainer = new JPanel();
-        mainContainer.setLayout(new CardLayout());
-        mainContainer.setPreferredSize(new Dimension(600, 450));
-        add(mainContainer);
         menu = new Menu();
-        addMenuBindings();
-        mainContainer.add("menu", menu);
         snake = new Snake();
         scoreBoard  = new Scoreboard();
-        add(scoreBoard);
         world = new World(snake, scoreBoard);
-        addWorldBindings();
-        world.addStateListener(new Listener() {
-            @Override
-            public void onGameOver() {
-                timePass.stop();
-                gameOver.setVisible(true);
-            }
-        });
-        mainContainer.add("game_screen", world);
         gameOver = new GameOver();
-        addGameOverBindings();
         world.add(gameOver);
         keyboardDelay = new Timer(85, new AbstractAction() {
             @Override
@@ -65,6 +47,27 @@ public class Manager extends JPanel {
         timePass = new Timer(100, new AbstractAction() {
             @Override           public void actionPerformed(ActionEvent e) {
                 world.update();
+            }
+        });
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JPanel mainContainer = new JPanel();
+        mainContainer.setLayout(new CardLayout());
+        mainContainer.setPreferredSize(new Dimension(600, 450));
+        mainContainer.add("menu", menu);
+        mainContainer.add("world", world);
+        add(mainContainer);
+        add(scoreBoard);
+    }
+
+    public void init() {
+        addMenuBindings();
+        addWorldBindings();
+        addGameOverBindings();
+        world.addStateListener(new Listener() {
+            @Override
+            public void onGameOver() {
+                timePass.stop();
+                gameOver.setVisible(true);
             }
         });
     }
@@ -79,9 +82,9 @@ public class Manager extends JPanel {
                 snake.setInitialState();
                 world.setInitialState();
                 scoreBoard.setInitialState();
-                timePass.start();
                 menu.setVisible(false);
                 world.setVisible(true);
+                timePass.start();
             }
         });
     }

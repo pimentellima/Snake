@@ -13,6 +13,7 @@ public class SnakeGame {
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
+        manager.init();
         window.setVisible(true);
     }
 
