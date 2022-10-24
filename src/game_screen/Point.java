@@ -1,6 +1,6 @@
 package game_screen;
 
-import controller.Manager;
+import main_window.Manager;
 
 import java.awt.*;
 

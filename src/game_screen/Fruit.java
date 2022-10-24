@@ -1,7 +1,7 @@
 package game_screen;
 
 import java.awt.*;
-import controller.Manager;
+import main_window.Manager;
 
 public class Fruit {
     private final int px;

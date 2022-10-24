@@ -2,8 +2,8 @@ package game_screen;
 
 import scoreboard_screen.Scoreboard;
 
-import controller.Manager;
-import controller.Listener;
+import main_window.Manager;
+import main_window.Listener;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

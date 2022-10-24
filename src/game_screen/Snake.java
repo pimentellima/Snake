@@ -1,17 +1,24 @@
 package game_screen;
 
+import main_window.Manager;
+
 import java.awt.*;
 import java.util.ArrayList;
 import static java.awt.event.KeyEvent.*;
 
 public class Snake {
 
-    private ArrayList<Point> body;
+    private final ArrayList<Point> body;
     private Point trail;
     private int direction;
 
-    public void setInitialState() {
+    public Snake() {
         this.body = new ArrayList<>();
+        direction = VK_RIGHT;
+    }
+
+    public void setInitialState() {
+        body.clear();
         body.add(new Point(60,120));
         body.add(new Point(30,120));
         body.add(new Point(0,120));
@@ -63,17 +70,14 @@ public class Snake {
     }
 
     public Boolean hasEaten(Fruit fruit) {
-        if(fruit == null) {
-            return false;
-        }
         Point head = body.get(0);
         return head.getPx() == fruit.getPx() && head.getPy() == fruit.getPy();
     }
 
     public Boolean hasCollided() {
         Point head = body.get(0);
-
-        if(head.getPx() == 600 || head.getPx() < 0 || head.getPy() == 450 || head.getPy() < 0) {
+        if(head.getPx() == Manager.WORLD_WIDTH || head.getPx() < 0 ||
+                head.getPy() == Manager.WORLD_HEIGHT || head.getPy() < 0) {
             return true;
         }
         for(int i = 1; i < body.size(); i++) {
@@ -81,7 +85,8 @@ public class Snake {
             if (point.getPx() == head.getPx() && point.getPy() == head.getPy()) {
                 return true;
             }
-        } return false;
+        }
+        return false;
     }
 
     public ArrayList<Point> getBody() { return body; }

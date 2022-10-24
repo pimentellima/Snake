@@ -1,4 +1,4 @@
-package controller;
+package main_window;
 
 import game_screen.GameOver;
 import game_screen.Menu;

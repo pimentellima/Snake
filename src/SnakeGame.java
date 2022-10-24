@@ -1,4 +1,4 @@
-import controller.Manager;
+import main_window.Manager;
 
 import javax.swing.*;
 
@@ -9,7 +9,6 @@ public class SnakeGame {
         Manager manager = new Manager();
         window.add(manager);
         window.setResizable(false);
-        window.setSize(614, 590);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
