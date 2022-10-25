@@ -15,10 +15,11 @@ public class World extends JPanel {
     private final Scoreboard scoreBoard;
     private final ArrayList<Listener> listeners;
 
-    public World(Snake snake, Scoreboard scoreBoard) {
+    public World(Snake snake, Scoreboard scoreBoard, EndGame endGame) {
         this.snake = snake;
         this.scoreBoard = scoreBoard;
         listeners = new ArrayList<>();
+        add(endGame);
         setVisible(false);
     }
 
@@ -39,8 +40,8 @@ public class World extends JPanel {
             gameOver();
         }
 
-        if(snake.getBody().size() - 1 == 300) {
-            gameOver();
+        if(snake.hasMaximumSize()) {
+            gameWon();
         }
         repaint();
     }
@@ -73,6 +74,12 @@ public class World extends JPanel {
     private void gameOver() {
         for(Listener listener : listeners) {
             listener.onGameOver();
+        }
+    }
+
+    private void gameWon() {
+        for(Listener listener : listeners) {
+            listener.onGameWon();
         }
     }
 

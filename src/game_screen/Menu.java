@@ -7,20 +7,30 @@ import java.awt.*;
 
 public class Menu extends JLabel {
 
+    public static final Font TITLE_FONT = new Font(Font.MONOSPACED, Font.BOLD, 42);
+    public static final Font SUB_FONT = new Font(Font.MONOSPACED, Font.BOLD, 20);
+
     public Menu() {
+        setLayout(new GridLayout(3,1));
         setBackground(Manager.GAME_COLOR);
-        setLayout(new GridLayout(2,1));
+        setOpaque(true);
         JLabel mainText = new JLabel("SNAKE");
-        JLabel subText = new JLabel("PRESSIONE ENTER PARA INICIAR");
-        mainText.setFont(Manager.TITLE_FONT);
-        mainText.setForeground(Manager.DEFAULT_COLOR);
-        subText.setForeground(Manager.DEFAULT_COLOR);
-        subText.setFont(Manager.DEFAULT_FONT);
+        JLabel textOne = new JLabel("PRESSIONE ENTER PARA INICIAR");
+        JLabel textTwo = new JLabel("USE AS SETAS DIRECIONAIS PARA SE MOVER");
+        mainText.setFont(TITLE_FONT);
+        mainText.setForeground(Manager.TEXT_COLOR);
+        textOne.setForeground(Manager.TEXT_COLOR);
+        textOne.setFont(SUB_FONT);
+        textTwo.setFont(SUB_FONT);
+        textTwo.setForeground(Manager.TEXT_COLOR);
         mainText.setHorizontalAlignment(SwingConstants.CENTER);
-        subText.setHorizontalAlignment(SwingConstants.CENTER);
-        subText.setVerticalAlignment(SwingConstants.CENTER);
+        textOne.setHorizontalAlignment(SwingConstants.CENTER);
+        textOne.setVerticalAlignment(SwingConstants.CENTER);
+        textTwo.setHorizontalAlignment(SwingConstants.CENTER);
+        textTwo.setVerticalAlignment(SwingConstants.CENTER);
         add(mainText);
-        add(subText);
+        add(textOne);
+        add(textTwo);
         setVisible(true);
     }
 }

@@ -4,12 +4,11 @@ import main_window.Manager;
 
 import javax.swing.*;
 
-public class GameOver extends JLabel {
+public class EndGame extends JLabel {
 
-    public GameOver() {
-        setText("GAME OVER");
+    public EndGame() {
         setFont(Manager.DEFAULT_FONT);
-        setForeground(Manager.DEFAULT_COLOR);
+        setForeground(Manager.TEXT_COLOR);
         setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalAlignment(SwingConstants.CENTER);
         setVisible(false);

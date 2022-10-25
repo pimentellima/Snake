@@ -7,12 +7,14 @@ public class SnakeGame {
     private static void init() {
         JFrame window = new JFrame("Snake Game");
         Manager manager = new Manager();
+        manager.addMenuBindings();
+        manager.addWorldBindings();
+        manager.addEndGameBindings();
         window.add(manager);
+        window.pack();
         window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.pack();
-        manager.init();
         window.setVisible(true);
     }
 

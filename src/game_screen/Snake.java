@@ -74,6 +74,10 @@ public class Snake {
         return head.getPx() == fruit.getPx() && head.getPy() == fruit.getPy();
     }
 
+    public Boolean hasMaximumSize() {
+        return body.size() - 1 == (Manager.WORLD_HEIGHT / Manager.POINT_WIDTH) * (Manager.WORLD_HEIGHT / Manager.POINT_HEIGHT);
+    }
+
     public Boolean hasCollided() {
         Point head = body.get(0);
         if(head.getPx() == Manager.WORLD_WIDTH || head.getPx() < 0 ||
