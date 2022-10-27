@@ -1,16 +1,11 @@
-import main_window.Manager;
-
 import javax.swing.*;
 
 public class SnakeGame {
 
     private static void init() {
         JFrame window = new JFrame("Snake Game");
-        Manager manager = new Manager();
-        manager.addMenuBindings();
-        manager.addWorldBindings();
-        manager.addEndGameBindings();
-        window.add(manager);
+        Board board = new Board();
+        window.add(board);
         window.pack();
         window.setResizable(false);
         window.setLocationRelativeTo(null);
