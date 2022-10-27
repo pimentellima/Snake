@@ -78,7 +78,6 @@ public class Board extends JPanel implements Listener {
     private class RestartAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            scoreBoard.updateHighScore();
             scoreBoard.setInitialState();
             world.setInitialState();
             world.setVisible(false);

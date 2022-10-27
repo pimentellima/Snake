@@ -28,7 +28,10 @@ public class Scoreboard extends JPanel{
     }
 
     public void setInitialState() {
-        score = 0;
+        if(score > highScore) {
+            highScore = score;
+        }
+        highScoreLabel.setText("Maior pontuação = " + highScore);score = 0;
         scoreLabel.setText("Pontuação = " + score);
         highScoreLabel.setText("Maior pontuação = " + highScore);
     }
@@ -36,12 +39,5 @@ public class Scoreboard extends JPanel{
     public void increaseScore() {
         score++;
         scoreLabel.setText("Pontuação = " + score);
-    }
-
-    public void updateHighScore() {
-        if(score > highScore) {
-            highScore = score;
-        }
-        highScoreLabel.setText("Maior pontuação = " + highScore);
     }
 }
