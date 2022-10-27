@@ -2,7 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Scoreboard extends JPanel{
+public class Scoreboard extends JPanel {
 
     private int score;
     private int highScore;
@@ -27,11 +27,12 @@ public class Scoreboard extends JPanel{
         setVisible(true);
     }
 
-    public void setInitialState() {
+    public void reset() {
         if(score > highScore) {
             highScore = score;
         }
-        highScoreLabel.setText("Maior pontuação = " + highScore);score = 0;
+        highScoreLabel.setText("Maior pontuação = " + highScore);
+        score = 0;
         scoreLabel.setText("Pontuação = " + score);
         highScoreLabel.setText("Maior pontuação = " + highScore);
     }

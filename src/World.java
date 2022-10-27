@@ -2,9 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import static java.awt.event.KeyEvent.*;
 
 public class World extends JPanel implements ActionListener {
 
@@ -19,11 +17,11 @@ public class World extends JPanel implements ActionListener {
     private final Timer timer;
     private final ArrayList<Listener> listeners;
 
-    protected static final Color FRUIT_COLOR = new Color(253, 152, 67, 255);
-    protected static final Color SNAKE_COLOR = new Color(103, 133, 88, 255);
-    public static final int REFRESH_RATE = 100;
-    public static final int WORLD_HEIGHT = 450;
-    public static final int WORLD_WIDTH = 600;
+    private static final Color FRUIT_COLOR = new Color(253, 152, 67, 255);
+    private static final Color SNAKE_COLOR = new Color(103, 133, 88, 255);
+    private static final int REFRESH_RATE = 100;
+    private static final int WORLD_HEIGHT = 450;
+    private static final int WORLD_WIDTH = 600;
     public static final int POINT_WIDTH = 30;
     public static final int POINT_HEIGHT = 30;
 
@@ -34,17 +32,17 @@ public class World extends JPanel implements ActionListener {
         listeners = new ArrayList<>();
         timer = new Timer(REFRESH_RATE, this);
 
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_RIGHT, 0), "Right");
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "Right");
         this.getActionMap().put("Right", new RightAction());
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_LEFT, 0), "Left");
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "Left");
         this.getActionMap().put("Left", new LeftAction());
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "Up");
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "Up");
         this.getActionMap().put("Up", new UpAction());
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Down");
+        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "Down");
         this.getActionMap().put("Down", new DownAction());
     }
 
-    public void initWorld() {
+    public void reset() {
         snake.clear();
         snake.add(new Point(60,120));
         snake.add(new Point(30,120));

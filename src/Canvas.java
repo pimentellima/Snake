@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static java.awt.event.KeyEvent.*;
-
 interface Listener {
     void gameOver();
     void gameWon();
@@ -27,13 +25,12 @@ public class Canvas extends JPanel implements Listener {
         world = new World(scoreBoard);
         world.addStateListener(this);
 
-        menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_ENTER, 0), "Enter");
+        menu.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
         menu.getActionMap().put("Enter", new StartAction());
-        gameEnd.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_ENTER, 0), "Enter");
+        gameEnd.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
         gameEnd.getActionMap().put("Enter", new RestartAction());
 
-        menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>" +
-                "USE AS SETAS DIRECIONAIS PARA SE MOVER");
+        menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>USE AS SETAS DIRECIONAIS PARA SE MOVER");
         menu.setForeground(TEXT_COLOR);
         menu.setHorizontalAlignment(SwingConstants.CENTER);
         menu.setVisible(true);
@@ -67,9 +64,7 @@ public class Canvas extends JPanel implements Listener {
     private class StartAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            scoreBoard.setInitialState();
-            gameEnd.setVisible(false);
-            world.initWorld();
+            world.reset();
             world.setVisible(true);
             menu.setVisible(false);
         }
@@ -78,8 +73,7 @@ public class Canvas extends JPanel implements Listener {
     private class RestartAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            scoreBoard.setInitialState();
-            world.initWorld();
+            scoreBoard.reset();
             world.setVisible(false);
             gameEnd.setVisible(false);
             menu.setVisible(true);
