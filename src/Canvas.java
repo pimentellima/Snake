@@ -69,7 +69,7 @@ public class Canvas extends JPanel implements Listener {
         public void actionPerformed(ActionEvent e) {
             scoreBoard.setInitialState();
             gameEnd.setVisible(false);
-            world.setInitialState();
+            world.initWorld();
             world.setVisible(true);
             menu.setVisible(false);
         }
@@ -79,7 +79,7 @@ public class Canvas extends JPanel implements Listener {
         @Override
         public void actionPerformed(ActionEvent e) {
             scoreBoard.setInitialState();
-            world.setInitialState();
+            world.initWorld();
             world.setVisible(false);
             gameEnd.setVisible(false);
             menu.setVisible(true);

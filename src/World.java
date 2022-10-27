@@ -44,7 +44,7 @@ public class World extends JPanel implements ActionListener {
         this.getActionMap().put("Down", new DownAction());
     }
 
-    public void setInitialState() {
+    public void initWorld() {
         snake.clear();
         snake.add(new Point(60,120));
         snake.add(new Point(30,120));
