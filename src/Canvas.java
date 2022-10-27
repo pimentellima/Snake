@@ -3,11 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 interface Listener {
-    void gameOver();
-    void gameWon();
+    void onGameOver();
+    void onGameWon();
+    void onScoreIncrease();
 }
 
-public class Canvas extends JPanel implements Listener {
+public class Canvas extends JPanel {
 
     private final JLabel menu;
     private final JLabel gameEnd;
@@ -22,22 +23,23 @@ public class Canvas extends JPanel implements Listener {
         menu = new JLabel();
         gameEnd = new JLabel();
         scoreBoard  = new Scoreboard();
-        world = new World(scoreBoard);
-        world.addStateListener(this);
+        world = new World();
 
         menu.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
         menu.getActionMap().put("Enter", new StartAction());
-        gameEnd.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
-        gameEnd.getActionMap().put("Enter", new RestartAction());
-
         menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>USE AS SETAS DIRECIONAIS PARA SE MOVER");
         menu.setForeground(TEXT_COLOR);
         menu.setHorizontalAlignment(SwingConstants.CENTER);
         menu.setVisible(true);
+
+        gameEnd.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
+        gameEnd.getActionMap().put("Enter", new RestartAction());
         gameEnd.setFont(DEFAULT_FONT);
         gameEnd.setForeground(TEXT_COLOR);
-        gameEnd.setVisible(false);
+
+        world.addStateListener(new WorldListener());
         world.add(gameEnd);
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel board = new JPanel();
         board.setLayout(new CardLayout());
@@ -49,16 +51,23 @@ public class Canvas extends JPanel implements Listener {
         add(scoreBoard);
     }
 
-    @Override
-    public void gameOver() {
-        gameEnd.setText("<html><center>PERDEU");
-        gameEnd.setVisible(true);
-    }
+    private class WorldListener implements Listener {
+        @Override
+        public void onGameOver() {
+            gameEnd.setText("<html><center>PERDEU");
+            gameEnd.setVisible(true);
+        }
 
-    @Override
-    public void gameWon() {
-        gameEnd.setText("<html><center>VENCEU");
-        gameEnd.setVisible(true);
+        @Override
+        public void onGameWon() {
+            gameEnd.setText("<html><center>VENCEU");
+            gameEnd.setVisible(true);
+        }
+
+        @Override
+        public void onScoreIncrease() {
+            scoreBoard.increaseScore();
+        }
     }
 
     private class StartAction extends AbstractAction {
@@ -66,6 +75,7 @@ public class Canvas extends JPanel implements Listener {
         public void actionPerformed(ActionEvent e) {
             world.reset();
             world.setVisible(true);
+            gameEnd.setVisible(false);
             menu.setVisible(false);
         }
     }

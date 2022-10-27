@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
 public class World extends JPanel implements ActionListener {
 
-    private final Scoreboard scoreboard;
     private final ArrayList<Point> snake;
     private final Point food;
     private Point trail;
@@ -22,11 +22,10 @@ public class World extends JPanel implements ActionListener {
     private static final int REFRESH_RATE = 100;
     private static final int WORLD_HEIGHT = 450;
     private static final int WORLD_WIDTH = 600;
-    public static final int POINT_WIDTH = 30;
     public static final int POINT_HEIGHT = 30;
+    public static final int POINT_WIDTH = 30;
 
-    public World(Scoreboard scoreboard) {
-        this.scoreboard = scoreboard;
+    public World() {
         this.snake = new ArrayList<>();
         this.food = new Point(0,0);
         listeners = new ArrayList<>();
@@ -109,7 +108,7 @@ public class World extends JPanel implements ActionListener {
         repaint();
     }
 
-    public void moveForward() {
+    private void moveForward() {
         trail = snake.get(snake.size() - 1);
         Point head = snake.get(0);
         int next_px = head.getPx();
@@ -130,16 +129,16 @@ public class World extends JPanel implements ActionListener {
         }
     }
 
-    public void checkFoodConsumed() {
+    private void checkFoodConsumed() {
         Point head = snake.get(0);
         if(head.getPx() == food.getPx() && head.getPy() == food.getPy()) {
             grow();
-            scoreboard.increaseScore();
+            scoreIncrease();
             newFruitLocation();
         }
     }
 
-    public void checkCollision() {
+    private void checkCollision() {
         Point head = snake.get(0);
         if(head.getPx() == WORLD_WIDTH || head.getPx() < 0 ||
                 head.getPy() == WORLD_HEIGHT || head.getPy() < 0) {
@@ -158,14 +157,14 @@ public class World extends JPanel implements ActionListener {
         }
     }
 
-    public void checkMaximumSize() {
+    private void checkMaximumSize() {
         if(snake.size() - 1 == (WORLD_HEIGHT / POINT_WIDTH) * (WORLD_HEIGHT / POINT_HEIGHT)) {
             timer.stop();
             gameWon();
         }
     }
 
-    public void grow() {
+    private void grow() {
         snake.add(new Point(trail.getPx(), trail.getPy()));
     }
 
@@ -192,13 +191,19 @@ public class World extends JPanel implements ActionListener {
 
     private void gameOver() {
         for(Listener listener : listeners) {
-            listener.gameOver();
+            listener.onGameOver();
         }
     }
 
     private void gameWon() {
         for(Listener listener : listeners) {
-            listener.gameWon();
+            listener.onGameWon();
+        }
+    }
+
+    private void scoreIncrease() {
+        for(Listener listener : listeners) {
+            listener.onScoreIncrease();
         }
     }
 
