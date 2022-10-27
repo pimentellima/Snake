@@ -9,7 +9,7 @@ interface Listener {
     void gameWon();
 }
 
-public class Board extends JPanel implements Listener {
+public class Canvas extends JPanel implements Listener {
 
     private final JLabel menu;
     private final JLabel gameEnd;
@@ -20,7 +20,7 @@ public class Board extends JPanel implements Listener {
     public static final Color GAME_COLOR = new Color(60, 63, 65);
     public static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 24);
 
-    public Board() {
+    public Canvas() {
         menu = new JLabel();
         gameEnd = new JLabel();
         scoreBoard  = new Scoreboard();
@@ -42,13 +42,13 @@ public class Board extends JPanel implements Listener {
         gameEnd.setVisible(false);
         world.add(gameEnd);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JPanel mainContainer = new JPanel();
-        mainContainer.setLayout(new CardLayout());
-        mainContainer.setBackground(GAME_COLOR);
-        mainContainer.setPreferredSize(new Dimension(600, 450));
-        mainContainer.add("menu", menu);
-        mainContainer.add("world", world);
-        add(mainContainer);
+        JPanel board = new JPanel();
+        board.setLayout(new CardLayout());
+        board.setBackground(GAME_COLOR);
+        board.setPreferredSize(new Dimension(600, 450));
+        board.add("menu", menu);
+        board.add("world", world);
+        add(board);
         add(scoreBoard);
     }
 

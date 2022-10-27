@@ -15,10 +15,10 @@ public class Scoreboard extends JPanel{
         highScore = 0;
         this.scoreLabel = new JLabel("Pontuação = " + 0);
         this.highScoreLabel = new JLabel("Maior pontuação = " + 0);
-        scoreLabel.setForeground(Board.TEXT_COLOR);
-        highScoreLabel.setForeground(Board.TEXT_COLOR);
-        scoreLabel.setFont(Board.DEFAULT_FONT);
-        highScoreLabel.setFont(Board.DEFAULT_FONT);
+        scoreLabel.setForeground(Canvas.TEXT_COLOR);
+        highScoreLabel.setForeground(Canvas.TEXT_COLOR);
+        scoreLabel.setFont(Canvas.DEFAULT_FONT);
+        highScoreLabel.setFont(Canvas.DEFAULT_FONT);
         setBackground(SCOREBOARD_COLOR);
         setLayout(new GridLayout());
         setPreferredSize(new Dimension(600, 100));

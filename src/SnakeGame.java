@@ -4,8 +4,8 @@ public class SnakeGame {
 
     private static void init() {
         JFrame window = new JFrame("Snake Game");
-        Board board = new Board();
-        window.add(board);
+        Canvas canvas = new Canvas();
+        window.add(canvas);
         window.pack();
         window.setResizable(false);
         window.setLocationRelativeTo(null);

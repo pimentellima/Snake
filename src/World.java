@@ -207,7 +207,7 @@ public class World extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(Board.GAME_COLOR);
+        graphics.setColor(Canvas.GAME_COLOR);
         graphics.fillRect(0,0, WORLD_WIDTH, WORLD_HEIGHT);
 
         graphics.setColor(FRUIT_COLOR);
