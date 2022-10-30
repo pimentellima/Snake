@@ -2,10 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-
-public class World extends JPanel implements ActionListener {
+public class World extends JPanel implements ActionListener, KeyListener {
 
     private final ArrayList<Point> snake;
     private final Point food;
@@ -31,14 +32,8 @@ public class World extends JPanel implements ActionListener {
         listeners = new ArrayList<>();
         timer = new Timer(REFRESH_RATE, this);
 
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "Right");
-        this.getActionMap().put("Right", new RightAction());
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "Left");
-        this.getActionMap().put("Left", new LeftAction());
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "Up");
-        this.getActionMap().put("Up", new UpAction());
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "Down");
-        this.getActionMap().put("Down", new DownAction());
+        addKeyListener(this);
+        setFocusable(true);
     }
 
     public void reset() {
@@ -46,57 +41,44 @@ public class World extends JPanel implements ActionListener {
         snake.add(new Point(60,120));
         snake.add(new Point(30,120));
         snake.add(new Point(0,120));
-        newFruitLocation();
         trail = snake.get(snake.size() - 1);
+        newFoodLocation();
         leftDirection = false;
         rightDirection = true;
         upDirection = false;
         downDirection = false;
         timer.start();
     }
-
-    private class RightAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (upDirection || downDirection) {
-                rightDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_UP && (leftDirection || rightDirection)) {
+            upDirection = true;
+            leftDirection = false;
+            rightDirection = false;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_DOWN && (leftDirection || rightDirection)) {
+            downDirection = true;
+            leftDirection = false;
+            rightDirection = false;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_LEFT && (upDirection || downDirection)) {
+            leftDirection = true;
+            upDirection = false;
+            downDirection = false;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_RIGHT && (upDirection || downDirection)) {
+            rightDirection = true;
+            upDirection = false;
+            downDirection = false;
         }
     }
 
-    private class LeftAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (upDirection || downDirection) {
-                leftDirection = true;
-                upDirection = false;
-                downDirection = false;
-            }
-        }
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 
-    private class UpAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(rightDirection || leftDirection) {
-                upDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
-        }
-    }
-
-    private class DownAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(rightDirection || leftDirection) {
-                downDirection = true;
-                rightDirection = false;
-                leftDirection = false;
-            }
-        }
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 
     @Override
@@ -133,8 +115,8 @@ public class World extends JPanel implements ActionListener {
         Point head = snake.get(0);
         if(head.getPx() == food.getPx() && head.getPy() == food.getPy()) {
             grow();
-            scoreIncrease();
-            newFruitLocation();
+            scoreIncreased();
+            newFoodLocation();
         }
     }
 
@@ -143,7 +125,7 @@ public class World extends JPanel implements ActionListener {
         if(head.getPx() == WORLD_WIDTH || head.getPx() < 0 ||
                 head.getPy() == WORLD_HEIGHT || head.getPy() < 0) {
             timer.stop();
-            gameOver();
+            gameLost();
             return;
         }
 
@@ -151,7 +133,7 @@ public class World extends JPanel implements ActionListener {
             Point point = snake.get(i);
             if (point.getPx() == head.getPx() && point.getPy() == head.getPy()) {
                 timer.stop();
-                gameOver();
+                gameLost();
                 return;
             }
         }
@@ -164,11 +146,7 @@ public class World extends JPanel implements ActionListener {
         }
     }
 
-    private void grow() {
-        snake.add(new Point(trail.getPx(), trail.getPy()));
-    }
-
-    private void newFruitLocation() {
+    private void newFoodLocation() {
         boolean valid;
         int px, py;
         do {
@@ -185,14 +163,8 @@ public class World extends JPanel implements ActionListener {
         food.setLocation(px, py);
     }
 
-    public void addStateListener(Listener listener) {
-        listeners.add(listener);
-    }
-
-    private void gameOver() {
-        for(Listener listener : listeners) {
-            listener.onGameOver();
-        }
+    private void grow() {
+        snake.add(new Point(trail.getPx(), trail.getPy()));
     }
 
     private void gameWon() {
@@ -201,10 +173,20 @@ public class World extends JPanel implements ActionListener {
         }
     }
 
-    private void scoreIncrease() {
+    private void gameLost() {
+        for(Listener listener : listeners) {
+            listener.onGameLost();
+        }
+    }
+
+    private void scoreIncreased() {
         for(Listener listener : listeners) {
             listener.onScoreIncrease();
         }
+    }
+
+    public void addListener(Listener listener) {
+        listeners.add(listener);
     }
 
     public void paintComponent(Graphics g) {

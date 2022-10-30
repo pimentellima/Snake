@@ -1,14 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 interface Listener {
-    void onGameOver();
+    void onGameLost();
     void onGameWon();
     void onScoreIncrease();
 }
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements KeyListener {
 
     private final JLabel menu;
     private final JLabel gameEnd;
@@ -25,20 +26,19 @@ public class Canvas extends JPanel {
         scoreBoard  = new Scoreboard();
         world = new World();
 
-        menu.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
-        menu.getActionMap().put("Enter", new StartAction());
+        setFocusable(true);
+        addKeyListener(this);
+
+        world.addListener(new WorldListener());
+        world.add(gameEnd);
+
         menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>USE AS SETAS DIRECIONAIS PARA SE MOVER");
         menu.setForeground(TEXT_COLOR);
         menu.setHorizontalAlignment(SwingConstants.CENTER);
         menu.setVisible(true);
 
-        gameEnd.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "Enter");
-        gameEnd.getActionMap().put("Enter", new RestartAction());
         gameEnd.setFont(DEFAULT_FONT);
         gameEnd.setForeground(TEXT_COLOR);
-
-        world.addStateListener(new WorldListener());
-        world.add(gameEnd);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel board = new JPanel();
@@ -53,15 +53,17 @@ public class Canvas extends JPanel {
 
     private class WorldListener implements Listener {
         @Override
-        public void onGameOver() {
-            gameEnd.setText("<html><center>PERDEU");
+        public void onGameLost() {
+            gameEnd.setText("PERDEU");
             gameEnd.setVisible(true);
+            requestFocusInWindow();
         }
 
         @Override
         public void onGameWon() {
-            gameEnd.setText("<html><center>VENCEU");
+            gameEnd.setText("VENCEU");
             gameEnd.setVisible(true);
+            requestFocusInWindow();
         }
 
         @Override
@@ -70,24 +72,28 @@ public class Canvas extends JPanel {
         }
     }
 
-    private class StartAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER && menu.isVisible())  {
             world.reset();
-            world.setVisible(true);
-            gameEnd.setVisible(false);
             menu.setVisible(false);
+            world.setVisible(true);
+            world.requestFocusInWindow();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_ENTER && gameEnd.isVisible()) {
+            scoreBoard.reset();
+            gameEnd.setVisible(false);
+            world.setVisible(false);
+            menu.setVisible(true);
         }
     }
 
-    private class RestartAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            scoreBoard.reset();
-            world.setVisible(false);
-            gameEnd.setVisible(false);
-            menu.setVisible(true);
-        }
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 }
 
