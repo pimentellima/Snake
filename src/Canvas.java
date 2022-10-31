@@ -54,14 +54,13 @@ public class Canvas extends JPanel implements KeyListener {
     private class WorldListener implements Listener {
         @Override
         public void onGameLost() {
-            gameEnd.setText("PERDEU");
-            gameEnd.setVisible(true);
+            gameEnd.setText("<html><center>PERDEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
             requestFocusInWindow();
         }
 
         @Override
         public void onGameWon() {
-            gameEnd.setText("VENCEU");
+            gameEnd.setText("<html><center>VENCEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
             gameEnd.setVisible(true);
             requestFocusInWindow();
         }
