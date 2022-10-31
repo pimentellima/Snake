@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class SnakeGame {
+public class Main {
 
     private static void init() {
         JFrame window = new JFrame("Snake Game");
