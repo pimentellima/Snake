@@ -55,6 +55,7 @@ public class Canvas extends JPanel implements KeyListener {
         @Override
         public void onGameLost() {
             gameEnd.setText("<html><center>PERDEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
+            gameEnd.setVisible(true);
             requestFocusInWindow();
         }
 
