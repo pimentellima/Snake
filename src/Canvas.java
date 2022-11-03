@@ -30,6 +30,7 @@ public class Canvas extends JPanel implements KeyListener, Listener {
         addKeyListener(this);
 
         world.addListener(this);
+        world.addListener(scoreBoard);
         world.add(gameEnd);
 
         menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>USE AS SETAS DIRECIONAIS PARA SE MOVER");
@@ -67,7 +68,6 @@ public class Canvas extends JPanel implements KeyListener, Listener {
 
     @Override
     public void onScoreIncrease() {
-        scoreBoard.increaseScore();
     }
 
     @Override

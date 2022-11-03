@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Scoreboard extends JPanel {
+public class Scoreboard extends JPanel implements Listener {
 
     private int score;
     private int highScore;
@@ -37,7 +37,16 @@ public class Scoreboard extends JPanel {
         scoreLabel.setText("Pontuação = " + score);
     }
 
-    public void increaseScore() {
+    @Override
+    public void onGameLost() {
+    }
+
+    @Override
+    public void onGameWon() {
+    }
+
+    @Override
+    public void onScoreIncrease() {
         score++;
         scoreLabel.setText("Pontuação = " + score);
     }
