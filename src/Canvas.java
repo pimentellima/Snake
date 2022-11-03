@@ -9,7 +9,7 @@ interface Listener {
     void onScoreIncrease();
 }
 
-public class Canvas extends JPanel implements KeyListener {
+public class Canvas extends JPanel implements KeyListener, Listener {
 
     private final JLabel menu;
     private final JLabel gameEnd;
@@ -29,7 +29,7 @@ public class Canvas extends JPanel implements KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        world.addListener(new WorldListener());
+        world.addListener(this);
         world.add(gameEnd);
 
         menu.setText("<html><h1><center>PRESSIONE ENTER PARA INICIAR<br>USE AS SETAS DIRECIONAIS PARA SE MOVER");
@@ -51,25 +51,23 @@ public class Canvas extends JPanel implements KeyListener {
         add(scoreBoard);
     }
 
-    private class WorldListener implements Listener {
-        @Override
-        public void onGameLost() {
-            gameEnd.setText("<html><center>PERDEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
-            gameEnd.setVisible(true);
-            requestFocusInWindow();
-        }
+    @Override
+    public void onGameLost() {
+        gameEnd.setText("<html><center>PERDEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
+        gameEnd.setVisible(true);
+        requestFocusInWindow();
+    }
 
-        @Override
-        public void onGameWon() {
-            gameEnd.setText("<html><center>VENCEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
-            gameEnd.setVisible(true);
-            requestFocusInWindow();
-        }
+    @Override
+    public void onGameWon() {
+        gameEnd.setText("<html><center>VENCEU<br><br>PRESSIONE ENTER PARA VOLTAR AO MENU</html>");
+        gameEnd.setVisible(true);
+        requestFocusInWindow();
+    }
 
-        @Override
-        public void onScoreIncrease() {
-            scoreBoard.increaseScore();
-        }
+    @Override
+    public void onScoreIncrease() {
+        scoreBoard.increaseScore();
     }
 
     @Override
